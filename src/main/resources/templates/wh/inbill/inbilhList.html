@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>验货入库</title>
+    <div th:include="common/head"></div>
+</head>
+<body>
+<div class="padding border-bottom">
+    <form  method="post" action = "/indillh/list"  id="queryform">
+        <ul class="search" style="padding-left:10px;">
+            <li>搜索：</li>
+            <li>
+                <input type="text" placeholder="请输入材料名/流水号" name="result" th:value="${result}"  id="warename"  class="input" style="width:250px; line-height:17px;display:inline-block" />
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="button border-main icon-search" onclick="changesearch()"> 搜索</a>
+            </li>
+        </ul>
+    </form>
+</div>
+<form method="post" action="" id="listform">
+    <div class="panel admin-panel">
+        <div class="panel-head"><strong class="icon-reorder">仓库信息</strong></div>
+        <table class="table table-hover text-center">
+            <tr>
+                <th>序号</th>
+                <th>装订号</th>
+                <th>单据号</th>
+                <th>入库日期</th>
+                <th>仓库</th>
+                <th>供应商</th>
+                <th>材料</th>
+                <th>品牌</th>
+                <th>数量</th>
+                <th>制单人</th>
+                <th>制单时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="i : ${page.list}">
+                <td  style="text-align:left; padding-left:20px;"><input type="checkbox" id="inbillcode" name="id[]" th:value="${i.whInbillH.inbillcode}" />
+                    <span th:text="${iStat.index+1}"></span>
+                </td>
+                <td th:text="${i.whInbillH.bindcode}">装订号</td>
+                <td th:text="${i.whInbillH.inbillcode}">单据号</td>
+                <td th:text="${#dates.format(i.whInbillH.indate, 'yyyy-MM-dd')}">入库日期</td>
+                <td th:text="${i.whInbillH.bsWarehouse.warename}">仓库</td>
+                <td th:text="${i.whInbillH.supplyname}">供应商</td>
+                <td th:text="${i.itemname}">材料</td>
+                <td th:text="${i.breadname}">品牌</td>
+                <td th:text="${i.itemnum}">数量</td>
+                <td th:text="${i.whInbillH.billman}">制单人</td>
+                <td th:text="${#dates.format(i.whInbillH.billdate, 'yyyy-MM-dd')}">制单时间</td>
+                <td th:text="${i.whInbillH.state == '0' ? '未审核':'已审核'}">状态</td>
+                <td>
+                    <span th:if="${i.whInbillH.state} == 0">
+                        <a class="button border-main" th:href="@{/indillh/toUpdate?id=} + ${i.whInbillH.bindcode}" style="padding: 2px 8px;"><span class="icon-edit"></span>修改</a>
+                    </span>
+                    <span th:if="${i.whInbillH.state} == 1">
+                        <a class="button border-main" th:href="@{/indillh/toUpdate/(id=${i.whInbillH.bindcode},type='query')}" style="padding: 2px 8px;"><span class="icon-edit"></span>查看</a>
+                    </span>
+                    <span th:if="${i.whInbillH.state} == 0">
+                        <a class="button border-red" th:onclick="del([[${i.whInbillH.inbillcode}]])"  style="padding: 2px 8px;" ><span class="icon-trash-o"></span>删除</a>
+                    </span>
+                    <span th:if="${i.whInbillH.state} == 0">
+                        <a class="button border-red" type="button"  th:onclick="examine([[${i.whInbillH.inbillcode}]])"  style="padding: 2px 8px;">审核</a>
+                    </span>
+                    <span th:if="${i.whInbillH.state} == 1"><a class="button border-red" type="button"  th:onclick="Reverse([[${i.whInbillH.inbillcode}]])"  style="padding: 2px 8px;">反审核</a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                    <td><a class="button border-main" href="/indillh/toAdd" style="padding: 2px 8px;" >
+                        <span class="icon-plus-square-o"></span> 新增</a>
+                    </td>
+                </tr>
+            <tr>
+                <td colspan="8">
+                    <div class="pagelist">
+                        <a th:href="@{/indillh/list/(start=1)}">首页</a>
+                        <a th:href="@{/indillh/list/(start=${page.pageNum - 1})}">上一页</a>
+                        <span th:if="${page.pageNum} != ${page.pages}" style="border:0px">
+                        <a th:href="@{/indillh/list/(start=${page.pageNum+1})}">下一页</a>
+                        </span>
+                        <a th:href="@{/indillh/list/(start=${page.pages})}">尾页</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+    </div>
+</form>
+<script type="text/javascript"  >
+    
+    function changesearch() {
+        $("#queryform").submit();
+    }
+
+    function Reverse(id) {
+        var confirm1 = confirm("确认要进行反审核么？");
+        if(confirm1){
+        $.ajax({
+            url:"/indillh/reverse/" + id,
+            success:function (data) {
+                if(data == "success"){
+                    window.location.reload();
+                }
+            }
+        })
+        }
+    }
+    function examine(id) {
+        var confirm1 = confirm("确认要进行审核么？");
+        if(confirm1) {
+            $.ajax({
+                url: "/indillh/state/" + id,
+                // data:JSON.stringify(json),
+                // contentType: 'application/json; charset=UTF-8',
+                success: function (data) {
+                    if (data == "success") {
+                        window.location.reload();
+                    } else {
+                        alert(data);
+                    }
+                }
+            })
+        }
+    }
+        //搜索
+        function changesearch(){
+            $("#queryform").submit();
+        }
+
+        //单个删除
+        function del(id){
+            if(confirm("您确定要删除吗?")){
+                $.ajax({
+                    type:"post",
+                    url:"/indillh/del/" + id,
+                    success:function (data) {
+                        if(data == "success"){
+                            window.location.reload();
+                        }else{
+                            alert(data);
+                        }
+                    }
+                })
+            }
+        }
+
+    </script>
+</body>
+</html>

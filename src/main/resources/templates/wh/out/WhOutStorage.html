@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>title</title>
+    <div th:include="common/head"></div>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head">
+        <strong class="icon-reorder"> 库存货物信息</strong>
+    </div>
+    <table class="table table-hover text-center">
+        <form onsubmit="return check()" action="/Storage/updateStorage" method="post">
+            <tr>
+                <th>序号</th>
+                <th>仓库名称</th>
+                <th>材料名称</th>
+                <th>品牌名称</th>
+                <th>钢号</th>
+                <th>计量单位</th>
+                <th>库存数量</th>
+                <th>计划调拨数</th>
+                <th>可配数量</th>
+                <th>选货数量</th>
+            </tr>
+            <tr th:each="Item : ${Item}">
+                <td th:text="${Item.storebill}"></td>
+                <input name="code" hidden="hidden"  th:value="${Item.storebill}" />
+                <input name="outbillcode" hidden="hidden" th:value="${outbillcode}" />
+                <td th:each="ware : ${ware}" th:if="${Item.warecode} == ${ware.warecode}" th:text="${ware.warename}">
+                </td>
+                <td th:each="itemcode : ${ItemName}" th:if="${itemcode.itemcode} == ${Item.itemcode}" th:text="${itemcode.itemname}"></td>
+                <td th:each="bread : ${bread}" th:if="${Item.breadcode} == ${bread.breadcode}" th:text="${bread.breadname}"></td>
+                <td th:text="${Item.indate}"></td>
+                <td th:text="${Item.whOutbillD.getUnitCode()}"></td>
+                <td th:text="${Item.itemnum}"></td>
+                <td th:text="${Item.plannum}"></td>
+                <td th:text="${Item.itemnum} - ${Item.plannum}"></td>
+<!--                <input name="Oknum" th:value="${Item.itemnum} - ${Item.plannum}"  />-->
+                <td>
+                    <input type="number" th:max="${Item.itemnum} - ${Item.plannum}" name="plannum" />
+                </td>
+                <!--<span th:with="firstPer+=1"></span>-->
+            </tr>
+            <tr>
+                <td colspan="10" style="margin-left: 100%">
+                    <input type="submit" style="width: 100px" class="button border-main" th:value="提交" />
+                    <a class="button border-main" style="width: 100px" th:href="@{/outH/updateOutItem(outBillCode=${outbillcode})}">
+                        返回
+                    </a>
+                </td>
+            </tr>
+        </form>
+    </table>
+    <script>
+        $(function () {
+            // var plannum = $(".plannum");
+            // alert(plannum[2].val())
+            // for(var i=0;i<plannum.length;i++){
+            //     $(".plannum")[i].attr("name","plannum["+i+"]")
+            // }
+
+        })
+        function check() {
+            return true;
+        }
+    </script>
+</div>
+</div>
+</div>
+</body>
+</html>

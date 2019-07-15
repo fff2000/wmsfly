@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/oastyle/css/pintuer.css">
+    <link rel="stylesheet" href="/oastyle/css/admin.css">
+    <script src="/oastyle/js/jquery.js"></script>
+    <script src="/oastyle/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 修改供应商信息</strong></div>
+    <table class="table table-hover text-center">
+        <form id="addserve" th:action="@{/serve/update}" method="post">
+            <tr style="width: 150px">
+                <td>
+                    <span>供应商编码</span>
+                    <input  name="servecode" readonly th:value="${serve.servecode}" />
+                </td>
+                <td>
+                    <span>&nbsp;供应商名称</span>
+                    <input id="servename" name="servename"  th:field="${serve.servename}" />
+                    <font color="red" th:errors="${bsServeH.servename}" ></font>
+                    <span style="color: red">*</span>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;法人代表</span>
+                    <input id="header" name="header" th:field="${serve.header}"/>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通讯地址</span>
+                    <input id="addr" name="addr" th:field="${serve.addr}"/>
+                </td>
+                <td>
+                    <span>联系电话</span>
+                    <input id="tel" name="tel" th:field="${serve.tel}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;联系人</span>
+                    <input id="connecter"  name="connecter" th:field="${serve.connecter}"/>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;手机</span>
+                    <input id="mobiltel" name="mobiltel" th:field="${serve.mobiltel}"/>
+                </td>
+                <td>
+                    <span>传真</span>
+                    <input id="fax" name="fax" th:field="${serve.fax}"/>
+                </td>
+                <td>
+                    <span>&nbsp;网址</span>
+                    <input  id="netaddr" name="netaddr"  th:field="${serve.netaddr}"/>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;邮箱</span>
+                    <input id="email" name="email" th:field="${serve.email}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;供应类型</span>
+                    <input id="custtype" name="custtype" th:field="${serve.custtype}"/>
+                </td>
+                <td>
+                    <span>负责人</span>
+                    <input  id="principal" name="principal" th:field="${serve.principal}"/>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;银行帐号</span>
+                    <input id="accounts" name="accounts" th:field="${serve.accounts}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开 户 行</span>
+                    <input id="bank" name="bank" th:field="${serve.bank}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;纳税人国税识别号</span>
+                    <input  id="countrytax" name="countrytax" th:field="${serve.countrytax}" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" align="right">
+                    <input type="submit" class="button border-main" onclick="$('#addserve').submit()"value="提交" style="padding: 8px 13px;"/>
+                    <a class="button border-main" href="/serve/list" style="padding: 8px 13px;">
+                        <span class="icon-edit"></span> 返回
+                    </a>
+                </td>
+            </tr>
+        </form>
+    </table>
+</div>
+</div>
+</div>
+</body>
+</html>

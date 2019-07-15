@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.bs.dao.BsBuilderMapper">
+  <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.BsBuilder">
+    <result column="builderCode" jdbcType="CHAR" property="buildercode" />
+    <result column="builderName" jdbcType="VARCHAR" property="buildername" />
+    <result column="linkMan" jdbcType="VARCHAR" property="linkman" />
+    <result column="linkmanDuty" jdbcType="VARCHAR" property="linkmanduty" />
+    <result column="sgAddr" jdbcType="VARCHAR" property="sgaddr" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="http" jdbcType="VARCHAR" property="http" />
+    <result column="accounts" jdbcType="VARCHAR" property="accounts" />
+    <result column="bank" jdbcType="VARCHAR" property="bank" />
+    <result column="countrytax" jdbcType="VARCHAR" property="countrytax" />
+  </resultMap>
+</mapper>

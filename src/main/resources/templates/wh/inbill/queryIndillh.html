@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <div th:include="common/headEdit"/>
+    <title>查看验货入库信息</title>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>修改验货入库信息</strong>
+    </div>
+    <div class="body-content">
+        <form method="post" th:action="@{/indillh/updateInbillH}"  class="form-x" id="indillH">
+            <table align="center" width="100%" style="border-collapse:separate; border-spacing:0px 10px;">
+                <tr>
+                    <td style="text-align:right ">
+                        <label>入库单号：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" readonly id="inbillcode" name="inbillcode" th:field="${inbillH.inbillcode}"
+                               style="line-height: 25px;height: 25px;width: 223px;">
+                        <span style="color: red;"></span>
+                        <span></span>
+                    </td>
+                    <td style="text-align:right ">
+                        <label>采购单号：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" readonly th:field="${inbillH.oldbill}" name="oldbill"
+                               style="line-height: 25px;height: 25px;">
+                        <span style="color: red;"></span>
+                    </td>
+                    <td style="text-align:right ">
+                        <label>仓库名称：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <select name="warecode" disabled th:field="${inbillH.warecode}" class="selectpicker" title="请选择仓库"
+                                data-live-search="true" multiple
+                                data-max-options="1">
+                            <option required th:each="w : ${ware}" th:text="${w.warename}"
+                                    th:value="${w.warecode}"></option>
+                        </select>
+                        <!-- <span th:errors="${whInbillH.warecode}"></span>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>供应商：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <select name="supplyname" disabled th:field="${inbillH.supplyname}" class="selectpicker" title="请选择供应商"
+                                data-live-search="true" multiple
+                                data-max-options="1">
+                            <option th:selected="${inbillH.supplyname == s.servename}" th:each="s : ${serve}" th:text="${s.servename}" th:value="${s.servename}"></option>
+                        </select>
+                        <span></span>
+                    </td>
+
+                    <td style="text-align:right ">
+                        <label>客户名称：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" readonly th:field="${inbillH.custname}" style="line-height: 25px;height: 25px;"
+                               name="custname">
+                    </td>
+                    <td style="text-align:right ">
+                        <label>运输方式：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <select name="trantype" disabled th:field="${inbillH.trantype}" class="selectpicker" title="请选择方式">
+                            <option value="0">汽车</option>
+                            <option value="1">火车</option>
+                            <option value="2">转存</option>
+                            <option value="3">船运</option>
+                        </select>
+                        <span></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>承运商：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <select name="carrier" disabled th:field="${inbillH.carrier}" class="selectpicker" title="请选择承运商"
+                                data-live-search="true" multiple
+                                data-max-options="1">
+                            <option th:each="t : ${tranunit}" th:text="${t.tranname}" th:value="${t.tranname}"></option>
+                        </select>
+                        <span></span>
+                    </td>
+                    <td style="text-align:right ">
+                        <label>承运车辆：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <select id="vehicle" disabled th:field="${inbillH.vehicle}" name="vehicle" class="selectpicker"
+                                title="请选择承运车辆" data-live-search="true"
+                                multiple data-max-options="1">
+                            <option th:each="v : ${vehilce}" th:text="${v.vehicleid}"
+                                    th:value="${v.vehicleid}"></option>
+                        </select>
+                        <span></span>
+                    </td>
+
+                    <td style="text-align:right ">
+                        <label>送货司机：</label>
+                    </td>
+                    <td style="text-align:left "><input type="text" readonly id="driver" th:field="${inbillH.driver}"
+                                                        style="line-height: 25px;height: 25px;"
+                                                        name="driver"></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>身份证号：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" id="identifyId" readonly th:field="${inbillH.identifyId}"
+                               style="line-height: 25px;height: 25px;"
+                               name="identifyId"></td>
+                    <td style="text-align:right ">
+                        <label>采购合同：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" readonly name="contactbill" th:field="${inbillH.contactbill}"
+                               style="line-height: 25px;height: 25px;"
+                        >
+                        <span style="color: red;"></span>
+                        <span></span>
+                    </td>
+                    <td style="text-align:right ">
+                        <label>提单号：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" readonly name="serverbill" th:field="${inbillH.serverbill}"
+                               style="line-height: 25px;height: 25px;">
+                        <span style="color: red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>司机电话：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" readonly name="motormanTel" style="line-height: 25px;height: 25px;"
+                               th:field="${inbillH.motormanTel}"
+                        >
+                        <span style="color: red;"></span>
+                        <span></span>
+                    </td>
+                    <td style="text-align:right ">
+                        <label>采购类型：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <select name="purType" disabled th:field="${inbillH.purtype}" class="selectpicker" title="请选择采购类型">
+                            <option value="0">合同采购</option>
+                            <option value="1">临时采购</option>
+                            <option value="2">冲减期初余额</option>
+                        </select>
+                        <span></span>
+                    </td>
+                    <td style="text-align:right ">
+                        <label>验货人：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" readonly name="tellman" th:field="${inbillH.tellman}" required
+                               style="line-height: 25px;height: 25px;">
+                        <span style="color: red;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>发单日期：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <!--                        <input type="text" name="senddate" style="line-height: 25px;height: 25px;">-->
+                        <div class="input-group date form_date col-md-10" style="padding-left:10px" data-date=""
+                             data-date-format="" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+                            <input type="text" readonly class="input w110" id="senddate" th:field="${inbillH.senddate}"
+                                   name="senddate"
+                                   data-validate="required:请输入内容"
+                                   required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span> </span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span> </span>
+                        </div>
+                        <span style="color: red;"></span>
+                    </td>
+
+                    <td style="text-align:right ">
+                        <label>入库日期：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <!--<input type="text" name="indate"
+                               style="line-height: 25px;height: 25px;">-->
+                        <div class="input-group date form_date col-md-10" style="padding-left:10px" data-date=""
+                             data-date-format="" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+                            <input type="text" readonly class="input w110" id="indate" name="indate" th:field="${inbillH.indate}"
+                                   data-validate="required:请输入内容"
+                                   required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span> </span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span> </span>
+                        </div>
+                        <span style="color: red;"></span>
+                    </td>
+                    <td style="text-align:right ">
+                        <label>备注：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" readonly style="line-height: 25px;height: 25px;" name="remark"th:field="${inbillH.remark}"></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </form>
+
+        <form method="post" style="margin-top: 0px" action="" id="indillD">
+            <div class="panel admin-panel">
+                <div class="panel-head"><strong class="icon-reorder">入库材料信息</strong></div>
+                <table class="table table-hover text-center">
+                    <tr>
+                        <th>序号</th>
+                        <th>货物名称</th>
+                        <th>品牌</th>
+                        <th>发货数量</th>
+                        <th>实收数量</th>
+                        <th>入库日期</th>
+                    </tr>
+                    <tr th:each="d : ${page.list}">
+                        <td  style="text-align:left; padding-left:20px;"><input type="checkbox" name="id[]" th:value="${d.rowno}" />
+                            <span th:text="${dStat.index+1}"></span>
+                        </td>
+                        <td th:text="${d.itemname}">货物名称</td>
+                        <td th:text="${d.breadname}"></td>
+                        <td th:text="${d.sendNum}">发货数量</td>
+                        <td th:text="${d.itemnum}">实收数量</td>
+                        <td th:text="${#dates.format(d.whInbillH.indate, 'yyyy-MM-dd')}">入库日期</td>
+                    </tr>
+                </table>
+            </div>
+</form>
+</div>
+</div>
+<script>
+
+
+
+
+    //校验后提交
+    /*$("#frm_bbsedit").on("submit", function(ev) {
+        //阻止submit表单提交
+        ev.preventDefault(
+            $.ajax({
+                type: "post",
+                url: "/bbs/addUptSave?pid=",
+                data: $('#frm_bbsedit').serialize(),
+                success: function (result) {
+                    console.log(result.code);
+                    if (result.code) {
+                        alert("提交成功");
+                        window.location.href = "/bbs/list";
+                    } else {
+                        // document.getElementById("testid").innerHTML= result.msg;
+                        alert("数据提交失败！");
+                        return false;
+                    }
+                },
+                error: function (result) {
+                    alert("error");
+                }})
+
+        );
+        return false;
+    });*/
+    //校验成功后调用公共的提交方法 该方法调试有问题提时屏蔽
+    /*  function submitForm() {
+          alert("调用submitForm");
+          $.ajax({
+              type: "post",
+              url: "/bbs/addUptSave?pid=",
+              data: $('#frm_bbsedit').serialize(),
+              success: function (result) {
+                  console.log(result.code);
+                  alert("返回结果");
+                  if (result.code) {
+                      alert("提交成功");
+                      window.location.href = "/bbs/list";
+                  } else {
+                      // document.getElementById("testid").innerHTML= result.msg;
+                      alert("数据提交失败！");
+                      return false;
+                  }
+              },
+              error: function (result) {
+                  alert("error");
+              }
+          })
+      }*/
+</script>
+</body>
+</html>

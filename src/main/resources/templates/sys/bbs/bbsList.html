@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="zh-cn">
+<head>
+    <title>公告管理</title>
+    <div th:include="common/head"/>
+</head>
+<body>
+
+<div class="padding border-bottom">
+    <form   method="post" action = "/bbs/list"  id="queryform">
+        <ul class="search" style="padding-left:10px;">
+            <li>搜索：</li>
+            <li>
+                <input type="text" placeholder="请输入公告名称" name="title"  id="title" th:value ="${param.title}" class="input" style="width:250px; line-height:17px;display:inline-block" />
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="button border-main icon-search" onclick="changesearch()" > 搜索</a>
+            </li>
+        </ul>
+    </form>
+</div>
+
+
+<form method="post" action="bbs/list/del" id="listform">
+    <div class="panel admin-panel">
+        <div class="panel-head"><strong class="icon-reorder">公告列表</strong></div>
+        <table class="table table-hover text-center">
+            <tr>
+                <th>序号</th>
+                <th>公告名称</th>
+                <th>发布时间</th>
+                <th>结束时间</th>
+                <th>操作</th>
+            </tr>
+            <volist name="list" id="vo">
+                <tr th:each="item : ${page.list}">
+                    <td style="text-align:left; padding-left:20px;"><input type="checkbox" name="id[]"
+                                                                           th:value="${{item.bbsId}}"/>
+                        <span th:text="${{itemStat.index+1}}"/></td>
+                    <td th:text="${item.title}"></td>
+                    <td th:text="${item.publicDate}"><font color="#00CC99">dd</font></td>
+                    <td th:text="${item.stopDate}"></td>
+                    <td>
+                        <div><a class="button border-main" th:href="@{/bbs/addUptUrl(pid=${item.bbsId})}" style="padding: 2px 8px;"><span
+                                class="icon-edit"></span> 修改</a><!--th:href="@{/bbs/list/del(idStr=${item.bbsId})}"-->
+                            <a class="button border-red" href="javascript:void(0)" th:onclick=" del([[${item.bbsId}]])"
+
+
+                               style="padding: 2px 8px;"><span class="icon-trash-o"></span> 删除</a></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:left; padding:10px 0;padding-left:20px;">
+                        <input type="checkbox"   id="checkall"/>全选
+                    </td>
+                    <td><a class="button border-red" href="javascript:void(0)" style="padding: 2px 8px;"
+                           onclick="return DelSelect()">
+                        <span class="icon-trash-o"></span> 批量删除</a></td>
+                    <td><a class="button border-main" href="/bbs/addUptUrl?pid=" style="padding: 2px 8px;">
+                        <span class="icon-plus-square-o"></span> 新增</a>
+                    </td>
+                    <td></td>  <td></td>
+                </tr>
+                <tr>
+                    <!--页脚：分页-->
+                    <td colspan="8">
+                        <div class="pagelist">
+                            <a th:href="@{/bbs/list(start=0,title=${param.title})}">[首  页]</a>
+                            <a th:href="@{/bbs/list(start=${page.pageNum-1},title=${param.title})}">[上一页]</a>
+                            <a th:href="@{/bbs/list(start=${page.pageNum+1},title=${param.title})}">[下一页]</a>
+                            <a th:href="@{/bbs/list(start=${page.pages},title=${param.title})}">[尾  页]</a>
+                            共[[${page.total}]]条记录
+                        </div>
+                    </td>
+                </tr>
+        </table>
+    </div>
+    </div>
+    </div>
+
+
+</form>
+<script type="text/javascript">
+    //搜索
+    function changesearch() {
+        $("#queryform").submit();
+    }
+    //单个删除
+    function del(id) {
+        if (confirm("您确定要删除吗?")) {
+            $.ajax({
+                type: "post",
+                url: "/bbs/list/del?idStr=" + id,
+                success: function (result) {
+                    console.log(result.code);
+                    // result.code=true代表删除成功.
+                    if (result.code) {
+                        alert(result.msg);
+                        window.location.href = "/bbs/list";
+                    } else {
+                        alert(result.msg);
+                        return false;
+                    }
+                }
+            });
+        }
+    }
+    //全选
+    $("#checkall").click(
+        function () {
+            if (this.checked) {
+                $("input[name='id[]']").each(function () {
+                    this.checked = true;
+                });
+            } else {
+                $("input[name='id[]']").each(function () {
+                    this.checked = false;
+                });
+            }
+        }
+    );
+
+    //批量删除
+    function DelSelect() {
+        var ids = "";
+        var Checkbox = false;
+        $("input[name='id[]']").each(function () {
+            if (this.checked == true) {
+                //获取选中复选框的主键值，用逗号隔开
+                ids += this.value + ",";
+                Checkbox = true;
+            }
+        });
+        if (Checkbox) {
+            var t = confirm("您确认要删除选中的内容吗？");
+            if (t == false)
+                return false;
+
+            $.ajax({
+                type: "post",
+                url: "/bbs/list/del?idStr=" + ids,
+                success: function (result) {
+                    console.log(result.code);
+                    // result.code=true代表删除成功.
+                    if (result.code) {
+                        alert(result.msg);
+                        window.location.href = "/bbs/list";
+                    } else {
+                        alert(result.msg);
+                        return false;
+                    }
+                }
+            });
+            //  $("#listform").submit();
+        }
+        else {
+            alert("请选择您要删除的内容!");
+            return false;
+        }
+    }
+
+</script>
+</body>
+</html>

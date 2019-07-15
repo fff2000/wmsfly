@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <div th:include="common/headEdit"/>
+    <title></title>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>编辑公告信息</strong></div>
+    <div class="body-content">
+        <form method="post" class="form-x" action="" id="frm_bbsedit">
+            <input type="hidden" th:field="${bbs.bbsId}" name="bbsId"/>
+            <div class="form-group">
+                <div class="label">
+                    <label>公告名称：</label>
+                </div>
+                <div class="field l10">
+                    <input type="text" th:field="${bbs.title}" class="input w100" name="title" th:maxlength="250"
+                           data-validate="required:请输入内容"  required/>
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label>发布日期：</label>
+                </div>
+                <div class="field l10">
+                    <input type="text" class="input w100" th:field="${bbs.publicDate}" name="publicDate"
+                           data-validate="required:请输入内容"  required/>
+                    <div class="tips"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <label for="dtp_input1">结束日期：</label>
+                </div>
+                <div class="input-group date form_date col-md-5" style="padding-left:10px" data-date=""
+                     data-date-format="" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+                    <input type="text"  class="input w110" id="end_time" name="start_time" data-validate="required:请输入内容"
+                           th:field="${bbs.stopDate}"  required>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span> </span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span> </span>
+                </div>
+                <div class="tips"></div>
+                <input type="hidden" id="dtp_input1" value=""/>
+            </div>
+
+            <div style="padding-left:20px ;padding-bottom: 20px;">
+                <label>【公告内容】</label>
+            </div>
+            <div class="field" style="padding-left: 30px;padding-right: 30px;">
+                <textarea class="input" name="content" style=" height:90px;"
+                          th:field="${bbs.content}" th:maxlength="2500" ></textarea>
+                <div class="tips"></div>
+            </div>
+
+            <div class="field" style="padding: 5px 35%;">
+                <button class="button bg-main icon-check-square-o" type="submit" id="btn_submit"  > 提交</button>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+<script language="JavaScript">
+/*    $('#frm_bbsedit').submit(function(){
+        debugger;
+        submitForm();
+    });*/
+//校验后提交
+$("#frm_bbsedit").on("submit", function(ev) {
+    /*    $.ajax({
+    });*/
+    //阻止submit表单提交
+    ev.preventDefault(
+        $.ajax({
+            type: "post",
+            url: "/bbs/addUptSave?pid=",
+            data: $('#frm_bbsedit').serialize(),
+            success: function (result) {
+                console.log(result.code);
+                if (result.code) {
+                    alert("提交成功");
+                    window.location.href = "/bbs/list";
+                } else {
+                    // document.getElementById("testid").innerHTML= result.msg;
+                    alert("数据提交失败！");
+                    return false;
+                }
+            },
+            error: function (result) {
+                alert("error");
+            }})
+
+    );
+    return false;
+});
+    //校验成功后调用公共的提交方法 该方法调试有问题提时屏蔽
+  /*  function submitForm() {
+        alert("调用submitForm");
+        $.ajax({
+            type: "post",
+            url: "/bbs/addUptSave?pid=",
+            data: $('#frm_bbsedit').serialize(),
+            success: function (result) {
+                console.log(result.code);
+                alert("返回结果");
+                if (result.code) {
+                    alert("提交成功");
+                    window.location.href = "/bbs/list";
+                } else {
+                    // document.getElementById("testid").innerHTML= result.msg;
+                    alert("数据提交失败！");
+                    return false;
+                }
+            },
+            error: function (result) {
+                alert("error");
+            }
+        })
+    }*/
+</script>
+</body>
+</html>

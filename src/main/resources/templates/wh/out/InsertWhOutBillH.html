@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/oastyle/css/pintuer.css">
+    <link rel="stylesheet" href="/oastyle/css/admin.css">
+    <script src="/oastyle/js/jquery.js"></script>
+    <script src="/oastyle/js/pintuer.js"></script>
+</head>
+<body>
+    <div class="panel admin-panel">
+        <div class="panel-head"><strong class="icon-reorder"> 新增出库信息</strong></div>
+            <table class="table table-hover text-center">
+                <form action="/outH/InsertOutItem" method="post">
+                <tr style="width: 150px">
+                    <td>
+                        出库单号:<input name="outbillcode" readonly />
+                    </td>
+                    <td>
+                        发运单号:<input name="sendbill" />
+                    </td>
+                    <td>
+                        销售单号:<input name="salebill" />
+                    </td>
+                </tr>
+                    <tr style="width: 150px">
+                        <td>
+                            标段名称:<input name="tag" />
+                        </td>
+                        <td>
+                            仓库名称:
+                            <select style="width: 150px" name="wareCode" id="wareCode">
+                                <option th:each="w : ${ware}" th:text="${w.warename}" th:value="${w.warecode}">请选择</option>
+                            </select>
+                            <span style="color: red;">*</span>
+                        </td>
+                        <td>
+                            项目名称:<input name="projectCode" />
+                            <span style="color: red;">*</span>
+                        </td>
+                    </tr>
+                    <tr style="width: 150px">
+                        <td>
+                            出库日期:<input name="outdate" type="date"/>
+                        </td>
+                        <td>
+                            配送单号:<input name="pickbill" />
+                        </td>
+                        <td>
+                            提货人名:<input name="tellMan" />
+                        </td>
+                    </tr>
+                    <tr style="width: 150px">
+                        <td>
+                            身份证号:<input name="identifyId"/>
+                        </td>
+                        <td>
+                            公司名称:<input name="carrier" />
+                        </td>
+                        <td>
+                            审核状态:
+                            <select style="width: 150px" readonly name="state" id="state">
+                                <option value="0">未出库</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr style="width: 150px">
+                        <td>
+                            提货车号:<input name="vehicle"/>
+                        </td>
+                        <td>
+                            提货司机:<input name="driver" />
+                        </td>
+                        <td>
+                            司机电话:<input name="motormanTel"/>
+                        </td>
+                    </tr>
+                    <tr style="width: 150px">
+                        <td>
+                            制单日期:<input name="billdate" type="date" id="billdate"/>
+                        </td>
+                        <td>
+                            运输方式:<input name="tranType" />
+                        </td>
+                        <td>
+                            出库方式:<input name="sendType"/>
+                        </td>
+                    </tr>
+                    <tr style="width: 150px">
+                        <td>
+                            运输单价:<input name="runprice" />
+                        </td>
+                        <td>
+                            运输件数:<input name="rununit" />
+                        </td>
+                        <td>
+                            供应商名称:
+                            <select style="width: 150px" name="supplyCode" id="supplyCode">
+                                <option th:each="l : ${list}" th:text="${l.servename}" th:value="${l.servecode}">请选择</option>
+                            </select>
+                        </td>
+                    </tr>
+                <tr>
+                    <td colspan="3" align="right">
+                        <input type="submit" id="submit" class="button border-main" value="提交" style="padding: 8px 18px;"/>
+                        <a class="button border-main" href="/outH/Index" style="padding: 8px 13px;">
+                            <span class="icon-edit"></span> 返回
+                        </a>
+                    </td>
+                </tr>
+            </form>
+            </table>
+    </div>
+    </div>
+    </div>
+<script>
+   /* $("#submit").click(function () {
+            var date = $("#billdate").val();
+            alert(date);
+    })*/
+
+</script>
+</body>
+</html>

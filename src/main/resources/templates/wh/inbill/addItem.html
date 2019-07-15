@@ -1,0 +1,171 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>添加材料</title>
+    <div th:include="common/head"></div>
+</head>
+<body>
+<div class="padding border-bottom">
+    <form method="post" action="/indillh/toAddItem"  id="queryform">
+        <ul class="search" style="padding-left:10px;">
+            <li>搜索：</li>
+            <li>
+                <input type="text" placeholder="请输入名称" th:value="${itemname}" name="itemname" id="itemname" class="input" style="width:250px; line-height:17px;display:inline-block"/>
+            </li>
+            <li><a href="javascript:void(0)" class="button border-main icon-search"onclick="changesearch()"> 搜索</a>
+            </li>
+            <li>品牌:</li>
+            <li>
+                <select id="bread" name="breadcode">
+                    <option th:each="b : ${breadName}" th:text="${b.breadname}" th:value="${b.breadcode}">
+                    </option>
+                </select>
+            </li>
+            <li style="float: right">
+                <button style="float:right;border-radius: 25px;color: #00aaee" type="button" id="button" class="btn btn-primary btn-lg">保存</button>
+                <button style="float:right;border-radius: 25px;color: #00aaee" type="button" id="return" class="btn btn-primary btn-lg">返回</button>
+            </li>
+        </ul>
+    </form>
+</div>
+<form method="post"  id="listform">
+    <input type="hidden" name="indillId" id="indillId" th:value="${id}"/>
+    <div class="panel admin-panel">
+        <table class="table table-hover text-center">
+            <tr>
+                <th>序号</th>
+                <th>材料名称</th>
+                <th>分类</th>
+                <th>单位</th>
+                <th>销售单价</th>
+                <th>数量</th>
+            </tr>
+            <tr th:each="t : ${page.list}">
+                <td style="text-align:left; padding-left:20px;"><input type="checkbox" class="itemcode" name="id[]" th:value="${t.itemcode}"/>
+                    <span th:text="${tStat.index+1}"></span>
+                </td>
+                <td th:text="${t.getItemname()}"></td>
+                <td th:text="${t.getBsItemtype().getItemname()}"></td>
+                <td th:text="${t.getUnitcode()}"></td>
+                <td th:text="${t.getSaleprice()}"></td>
+                <td>
+                    <input class="itemnum" name="itemnum" type="text"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <div class="pagelist">
+                        <a th:href="@{/indillh/toAddItem/(start=1)}">首页</a>
+                        <a th:href="@{/indillh/toAddItem/(start=${page.pageNum - 1})}">上一页</a>
+                        <span th:if="${page.pageNum} != ${page.pages}" style="border:0px">
+                        <a th:href="@{/indillh/toAddItem/(start=${page.pageNum+1})}">下一页</a>
+                        </span>
+                        <a th:href="@{/indillh/toAddItem/(start=${page.pages})}">尾页</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+<script type="text/javascript"  >
+
+    $("#return").click(function () {
+        window.location.href="/indillh/list";
+    })
+
+    function changesearch(){
+        $("#queryform").submit();
+    }
+    var json = [];
+    $("#button").click(function () {
+        var breadcode = $("#bread option:selected").val();
+        var breadname = $("#bread option:selected").text();
+        var id = $("#indillId").val();
+        $("input[name='itemnum']").each(function () {
+            if(this.value != null && this.value != ""){
+                var itemnum = this.value;
+                var itemcode = $(this).parent().parent().find("input[name='id[]']").val();
+                var itemname = $(this).parent().parent().children().eq(1).text();
+                var unitcode = $(this).parent().parent().children().eq(3).text();
+                var saleprice = $(this).parent().parent().children().eq(4).text();
+               json.push({"inbillcode":id,"price":saleprice,"unitCode":unitcode,"itemnum":itemnum,"itemcode":itemcode,"itemname":itemname,"breadcode":breadcode,"breadname":breadname});
+            }
+        })
+        console.log(json);
+        $.ajax({
+            type:"post",
+            contentType: "application/json;charset=utf-8",
+            url:"/indillh/addItem",
+            data:JSON.stringify(json),
+            success:function (data) {
+                alert(data);
+                if(data == "success"){
+                    window.location.href="/indillh/list";
+                }
+            }
+        })
+    })
+
+      /*  //搜索
+        function changesearch(){
+            $("#queryform").submit();
+        }*/
+
+        /*//单个删除
+        function del(id){
+            if(confirm("您确定要删除吗?")){
+                $.ajax({
+                    type:"post",
+                    url:"/war/del/" + id,
+                })
+            }
+        }*/
+        //全选
+        $("#checkall").click(function(){
+            $("input[name='id[]']").each(function(){
+                if (this.checked) {
+                    this.checked = false;
+                }
+                else {
+                    this.checked = true;
+                }
+            });
+        })
+
+        //批量删除
+        function DelSelect(){
+            var ids = "";
+            var Checkbox=false;
+            $("input[name='id[]']").each(function(){
+                if (this.checked==true) {
+                    ids += this.value + ",";
+                    Checkbox=true;
+                }
+            });
+            if (Checkbox){
+                var t=confirm("您确认要删除选中的内容吗？");
+                if (t==false) return false;
+                $.ajax({
+                    type:"post",
+                    url:"/war/del/" + ids,
+                    success:function (result) {
+                        window.location.href="/war/list";
+                    }
+                })
+                $("#listform").submit();
+            }
+            else{
+                alert("请选择您要删除的内容!");
+                return false;
+            }
+        }
+
+
+
+    </script>
+</body>
+</html>

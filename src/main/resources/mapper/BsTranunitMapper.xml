@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.bs.dao.BsTranunitMapper">
+  <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.BsTranunit">
+    <result column="tranCode" jdbcType="CHAR" property="trancode" />
+    <result column="tranName" jdbcType="VARCHAR" property="tranname" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="connecter" jdbcType="VARCHAR" property="connecter" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="tranpower" jdbcType="VARCHAR" property="tranpower" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="corporation" jdbcType="VARCHAR" property="corporation" />
+    <result column="taxCode" jdbcType="VARCHAR" property="taxcode" />
+    <result column="charter" jdbcType="VARCHAR" property="charter" />
+    <result column="enrol" jdbcType="DECIMAL" property="enrol" />
+    <result column="linkMan" jdbcType="VARCHAR" property="linkman" />
+    <result column="linkTel" jdbcType="VARCHAR" property="linktel" />
+    <result column="httpAdr" jdbcType="VARCHAR" property="httpadr" />
+    <result column="principalTel" jdbcType="VARCHAR" property="principaltel" />
+    <result column="accounts" jdbcType="VARCHAR" property="accounts" />
+    <result column="bank" jdbcType="VARCHAR" property="bank" />
+  </resultMap>
+
+  <select id="findBsTranunitAll" resultType="BsTranunit">
+        select * from bs_tranunit
+  </select>
+	<select id="getBsTranunit" resultType="BsTranunit">
+		select * from bs_tranunit where 1=1
+		<if test="content != null and content != ''">
+			and	tranName like '%${content}%'
+			or connecter like '%${content}%'
+			or tel like '%${content}%'
+		</if>
+	</select>
+	<select id="getBsTranunitMaxId" resultType="String">
+		SELECT IFNULL(MAX(tranCode),'T00000') FROM bs_tranunit
+	</select>
+	<select id="getBsTranunitById" resultType="BsTranunit">
+		select * from bs_tranunit where tranCode = #{id}
+	</select>
+	<update id="updateBsTranunit">
+	UPDATE bs_tranunit
+	SET
+	tranName = #{tranname} ,
+	city = #{city},
+	connecter = #{connecter} ,
+	tel = #{tel} ,
+	fax = #{fax} ,
+	tranpower = #{tranpower},
+	addr = #{addr} ,
+	memo = #{memo} ,
+	corporation = #{corporation} ,
+	taxCode = #{taxcode} ,
+	charter = #{charter} ,
+	enrol = #{enrol} ,
+	linkMan = #{linkman},
+	linkTel = #{linktel},
+	httpAdr = #{httpadr},
+	principalTel = #{principaltel},
+	accounts = #{accounts},
+	bank = #{bank}
+	WHERE
+	tranCode = #{trancode} ;
+	</update>
+  <insert id="insertBsTranunit">
+    INSERT INTO bs_tranunit
+	(tranCode,
+	tranName,
+	city,
+	connecter,
+	tel,
+	fax,
+	tranpower,
+	addr,
+	memo,
+	corporation,
+	taxCode,
+	charter,
+	enrol,
+	linkMan,
+	linkTel,
+	httpAdr,
+	principalTel,
+	accounts,
+	bank
+	)
+	VALUES
+	(
+	#{trancode},
+	#{tranname},
+	#{city},
+	#{connecter},
+	#{tel},
+	#{fax},
+	#{tranpower},
+	#{addr},
+	#{memo},
+	#{corporation},
+	#{taxcode},
+	#{charter},
+	#{enrol},
+	#{linkman},
+	#{linktel},
+	#{httpadr},
+	#{principaltel},
+	#{accounts},
+	#{bank}
+	);
+  </insert>
+
+	<delete id="delBsTranunit" parameterType="java.util.List">
+		delete from bs_tranunit where tranCode in (${ids})
+	</delete>
+</mapper>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <div th:include="common/headEdit"/>
+    <title></title>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>编辑公告信息</strong></div>
+    <div class="body-content">
+        <form method="post" class="form-x" th:action="@{/elec/update}" id="itemtypeAdd">
+            <table align="center" width="80%" style="border-collapse:separate; border-spacing:0px 10px;">
+                <tr>
+                    <td style="text-align:right ">
+                        <label>用电类型：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <select name="uid">
+                            <option th:each="t : ${elecType}" th:selected="${id} == ${t.id}" th:text="${t.getName()}" th:value="${t.id}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>电压等级：</label>
+                        <select>
+
+                        </select>
+                    </td>
+                    <td style="text-align:left ">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>用电时段：</label>
+                    </td>
+                    <td style="text-align:left ">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>用电价格：</label>
+                    </td>
+                    <td style="text-align:left ">
+                    </td>
+                </tr>
+                <tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <td colspan="4" style="text-align:center "><input class="button bg-main icon-check-square-o button-small" type="submit" id="button" > </input></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script language="JavaScript">
+  /* function subTest(){
+        alert("提交事件，刷新树");
+       $('#itemtypeUpdate').submit();
+        window.parent.itemtypeLeft.location.reload();
+    };*/
+
+   $("#button").click(function () {
+       $.ajax({
+           url:"/itemtype/update",
+           data:$("#itemtypeUpdate").serialize(),
+           dataType:"json",
+           success:function (data) {
+               if(data.msg != null){
+                   alert(data.msg);
+               }
+               if(data.integer == 1){
+                   window.parent.itemtypeLeft.location.reload();
+                   window.parent.itemtypeRight.location.href="/itemtype/list";
+               }
+           }
+       })
+   })
+/*    $('#frm_bbsedit').submit(function(){
+        debugger;
+        submitForm();
+    });*/
+
+//校验后提交
+/*$("#frm_bbsedit").on("submit", function(ev) {
+    //阻止submit表单提交
+    ev.preventDefault(
+        $.ajax({
+            type: "post",
+            url: "/bbs/addUptSave?pid=",
+            data: $('#frm_bbsedit').serialize(),
+            success: function (result) {
+                console.log(result.code);
+                if (result.code) {
+                    alert("提交成功");
+                    window.location.href = "/bbs/list";
+                } else {
+                    // document.getElementById("testid").innerHTML= result.msg;
+                    alert("数据提交失败！");
+                    return false;
+                }
+            },
+            error: function (result) {
+                alert("error");
+            }})
+
+    );
+    return false;
+});*/
+    //校验成功后调用公共的提交方法 该方法调试有问题提时屏蔽
+  /*  function submitForm() {
+        alert("调用submitForm");
+        $.ajax({
+            type: "post",
+            url: "/bbs/addUptSave?pid=",
+            data: $('#frm_bbsedit').serialize(),
+            success: function (result) {
+                console.log(result.code);
+                alert("返回结果");
+                if (result.code) {
+                    alert("提交成功");
+                    window.location.href = "/bbs/list";
+                } else {
+                    // document.getElementById("testid").innerHTML= result.msg;
+                    alert("数据提交失败！");
+                    return false;
+                }
+            },
+            error: function (result) {
+                alert("error");
+            }
+        })
+    }*/
+</script>
+</body>
+</html>

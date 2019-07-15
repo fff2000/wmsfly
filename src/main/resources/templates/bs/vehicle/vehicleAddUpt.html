@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:include="common/headEdit"/>
+    <title>Title</title>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 新增车辆信息</strong></div>
+    <table class="table table-hover text-center">
+        <form id="addVehicle" th:action="@{/V/add}" method="post">
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;车辆编号</span>
+                    <input name="vehiclecode" readonly  th:value="${V.vehiclecode}" />
+                </td>
+                <td>
+                    <span>车牌号码</span>
+                    <input id="vehiclecid" name="vehicleid" th:value="${V.vehicleid}"  />
+                    <font style="color: red;" th:errors="${bsVehicle.vehicleid}"></font>
+                    <span style="color: red">*</span>
+                </td>
+                <td style="text-align:left ">
+                    <span>运输单位</span>
+                    <select name="trancode">
+                        <option th:each="t : ${tranunit}"  th:text="${t.getTranname()}" th:value="${t.getTrancode()}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;营运证号码</span>
+                    <input id="runcode" name="runcode" th:value="${V.runcode}"/>
+                </td>
+                <td>
+                    <span>行驶证号码</span>
+                    <input id="drivecode" name="drivecode" th:value="${V.drivecode}" />
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;所在城市</span>
+                    <input id="city"  name="city" th:value="${V.city}"/>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;驾驶员</span>
+                    <input id="driver" name="driver"  th:value="${V.driver}"/>
+                    <font style="color: red;" th:errors="${bsVehicle.driver}"></font>
+                    <span style="color: red">*</span>
+                </td>
+                <td>
+                    <span>&nbsp生产厂家</span>
+                    <input id="plant" name="plant" th:value="${V.plant}" />
+                </td>
+                <td>
+                    <span>&nbsp;购置费证号码</span>
+                    <input  id="buycode" name="buycode" th:value="${V.buycode}" />
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;车厂家型号</span>
+                    <input id="plantmodel" name="plantmodel" th:value="${V.plantmodel}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;驾驶员身份证</span>
+                    <input id="driverid" name="driverid" th:value="${V.driverid}"/>
+                    <font style="color: red;" th:errors="${bsVehicle.driverid}"></font>
+                    <span style="color: red">*</span>
+                </td>
+                <td>
+                    <span>车架号码</span>
+                    <input  id="framemodel" name="framemodel" th:value="${V.framemodel}"/>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发动机号</span>
+                    <input id="motormodel" name="motormodel" th:value="${V.motormodel}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车容量编码</span>
+                    <input id="vehiclelong" name="vehiclelong" th:value="${V.vehiclelong}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车辆颜色</span>
+                    <input  id="vehiclecolor" name="vehiclecolor" th:value="${V.vehiclecolor}" />
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;底盘高度</span>
+                    <input id="underpan" name="underpan" th:value="${V.underpan}"/>
+                </td>
+                <td>
+                    <span>实际车长</span>
+                    <input id="reallong" name="reallong" th:value="${V.reallong}" />
+                </td>
+                <td>
+                    <span>&nbsp;实际车宽</span>
+                    <input  id="realwide" name="realwide" th:value="${V.realwide}"/>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>有效载重</span>
+                    <input  id="loading" name="loading" th:value="${V.loading}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最大载重</span>
+                    <input  id="maxloading" name="maxloading" th:value="${V.maxloading}"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" align="right">
+                    <input type="submit" class="button border-main" onclick="$('#addVehicle').submit()"value="提交" style="padding: 8px 13px;"/>
+                    <a class="button border-main" href="/V/list" style="padding: 8px 13px;">
+                        <span class="icon-edit"></span> 返回
+                    </a>
+                </td>
+            </tr>
+        </form>
+    </table>
+</div>
+</div>
+</div>
+</body>
+</html>

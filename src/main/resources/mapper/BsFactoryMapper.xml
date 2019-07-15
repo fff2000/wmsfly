@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.bs.dao.BsFactoryMapper">
+  <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.BsFactory">
+    <result column="factoryCode" jdbcType="CHAR" property="factorycode" />
+    <result column="factoryName" jdbcType="VARCHAR" property="factoryname" />
+    <result column="state" jdbcType="CHAR" property="state" />
+    <result column="billman" jdbcType="VARCHAR" property="billman" />
+    <result column="billDate" jdbcType="TIMESTAMP" property="billdate" />
+  </resultMap>
+</mapper>

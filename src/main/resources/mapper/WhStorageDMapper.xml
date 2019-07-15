@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.wh.dao.WhStorageDMapper">
+	<select id="findAll" resultType="WhStorageD">
+    select * from wh_storage_d
+  </select>
+  <insert id="insertWhStorageD">
+    INSERT INTO wmsdb.wh_storage_d
+	(storebill,
+	itemcode,
+	breadcode,
+	wareCode,
+	unitCode,
+	plannum,
+	itemnum,
+	fromTable,
+	indate
+	)
+	VALUES
+	(
+	#{storebill},
+	#{itemcode},
+	#{breadcode},
+	#{warecode},
+	#{unitcode},
+	#{plannum},
+	#{itemnum},
+	#{fromTable},
+	#{indate}
+	);
+  </insert>
+	<delete id="delWhStorageD"  parameterType="string">
+		DELETE FROM wh_storage_d WHERE storebill LIKE '%${id}%'
+	</delete>
+</mapper>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>分时电价</title>
+    <div th:include="common/head"></div>
+</head>
+<body>
+<td method="post" action="" id="listform">
+    <div class="panel admin-panel">
+        <div class="panel-head"><strong class="icon-reorder">分时电价信息</strong></div>
+        <table class="table table-hover text-center">
+            <tr>
+                <th>序号</th>
+                <th>用电类型</th>
+                <th>用电等级</th>
+                <th>用电时段</th>
+                <th>价格</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="item : ${list}">
+                <td  style="text-align:left; padding-left:20px;">
+                    <input type="checkbox" name="id[]" th:value="${item.id}"/>
+                    <span th:text="${{itemStat.index+1}}"/></td>
+                <td th:text="${item.useElecType.name}"></td>
+                <div th:switch="${item.eleType}">
+                    <td th:case="0">不满1千伏</td>
+                    <td th:case="1">1-10千伏</td>
+                    <td th:case="2">10-110千伏</td>
+                    <td th:case="3">110千伏以上</td>
+                </div>
+                <div th:switch="${item.timeType}">
+                    <td th:case="0">尖峰</td>
+                    <td th:case="1">高峰</td>
+                    <td th:case="2">平段</td>
+                    <td th:case="3">低估</td>
+                </div>
+                <td th:text="${item.price}"></td>
+                <td>
+                    <div><a class="button border-main"  th:href="@{/elec/toUpdate/} + ${item.id}" style="padding: 2px 8px;"><span
+                            class="icon-edit"></span> 修改</a><!--th:href="@{/bbs/list/del(idStr=${item.bbsId})}"-->
+                        <a class="button border-red" th:href="@{/elec/del/} + ${item.id}"
+                           style="padding: 2px 8px;"><span class="icon-trash-o"></span> 删除</a></div>
+                </td>
+                </tr>
+
+                <tr>
+                    <td><a class="button border-main" href="/elec/toAdd" style="padding: 2px 8px;">
+                        <span class="icon-plus-square-o"></span> 新增</a>
+                    </td>
+                    <td></td>  <td></td>
+                </tr>
+                <tr>
+                    <!--页脚：分页-->
+                    <td colspan="8">
+
+                        <div class="pagelist">
+                        </div>
+                    </td>
+                </tr>
+        </table>
+    </div>
+    </div>
+    </div>
+
+
+</form>
+<script type="text/javascript">
+
+
+    //单个删除
+   /* function del(id) {
+        if (confirm("您确定要删除吗?")) {
+            $.ajax({
+                type: "post",
+                url: "/elec/del/" + id,
+                success: function (result) {
+                    console.log(result.code);
+                    // result.code=true代表删除成功.
+                    if (result.code) {
+                        alert(result.msg);
+                        window.location.href = "/elec/eleclist";
+                    } else {
+                        alert(result.msg);
+                        return false;
+                    }
+                }
+            });
+        }
+    }*/
+
+    //全选
+   /* $("#checkall").click(
+        function () {
+            if (this.checked) {
+                $("input[name='id[]']").each(function () {
+                    this.checked = true;
+                });
+            } else {
+                $("input[name='id[]']").each(function () {
+                    this.checked = false;
+                });
+            }
+        }
+    );
+
+    //批量删除
+    function DelSelect() {
+        var ids = "";
+        var Checkbox = false;
+        $("input[name='id[]']").each(function () {
+            if (this.checked == true) {
+                //获取选中复选框的主键值，用逗号隔开
+                ids += this.value + ",";
+                Checkbox = true;
+            }
+        });
+        if (Checkbox) {
+            var t = confirm("您确认要删除选中的内容吗？");
+            if (t == false)
+                return false;
+            alert(ids);
+            $.ajax({
+                type: "post",
+                url: "/list/del?idStr=" + ids,
+
+                success: function (result) {
+                    console.log(result.code);
+                    // result.code=true代表删除成功.
+                    if (result.code) {
+                        alert(result.msg);
+                        window.location.href = "/bs/bread/list";
+                    } else {
+                        alert(result.msg);
+                        return false;
+                    }
+                }
+            });
+            //  $("#listform").submit();
+        }
+        else {
+            alert("请选择您要删除的内容!");
+            return false;
+        }
+    }*/
+
+
+
+</script>
+</body>
+</html>

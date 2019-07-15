@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.obtk.wmsfly.wh.dao.WhOutbillHMapper">
+    <resultMap id="BaseResultMap" type="WhOutbillH" >
+        <id column="outbillCode" property="outbillcode" jdbcType="CHAR" />
+        <result column="sendbill" property="sendbill" jdbcType="VARCHAR" />
+        <result column="salebill" property="salebill" jdbcType="CHAR" />
+        <result column="contactbill" property="contactbill" jdbcType="VARCHAR" />
+        <result column="tag" property="tag" jdbcType="VARCHAR" />
+        <result column="cust_code" property="custCode" jdbcType="CHAR" />
+        <result column="custtype" property="custtype" jdbcType="CHAR" />
+        <result column="ware_code" property="wareCode" jdbcType="CHAR" />
+        <result column="project_code" property="projectCode" jdbcType="CHAR" />
+        <result column="outdate" property="outdate" jdbcType="TIMESTAMP" />
+        <result column="pickbill" property="pickbill" jdbcType="VARCHAR" />
+        <result column="tell_man" property="tellMan" jdbcType="VARCHAR" />
+        <result column="identify_id" property="identifyId" jdbcType="VARCHAR" />
+        <result column="carrier" property="carrier" jdbcType="CHAR" />
+        <result column="state" property="state" jdbcType="CHAR" />
+        <result column="depart" property="depart" jdbcType="CHAR" />
+        <result column="billtype" property="billtype" jdbcType="CHAR" />
+        <result column="vehicle" property="vehicle" jdbcType="VARCHAR" />
+        <result column="driver" property="driver" jdbcType="VARCHAR" />
+        <result column="motorman_tel" property="motormanTel" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="billman" property="billman" jdbcType="VARCHAR" />
+        <result column="stateman" property="stateman" jdbcType="VARCHAR" />
+        <result column="billdate" property="billdate" jdbcType="TIMESTAMP" />
+        <result column="statedate" property="statedate" jdbcType="TIMESTAMP" />
+        <result column="tran_type" property="tranType" jdbcType="CHAR" />
+        <result column="input_flag" property="inputFlag" jdbcType="CHAR" />
+        <result column="veh_type" property="vehType" jdbcType="CHAR" />
+        <result column="send_type" property="sendType" jdbcType="CHAR" />
+        <result column="runbill" property="runbill" jdbcType="CHAR" />
+        <result column="runline" property="runline" jdbcType="CHAR" />
+        <result column="runprice" property="runprice" jdbcType="DECIMAL" />
+        <result column="rununit" property="rununit" jdbcType="CHAR" />
+        <result column="runcontact" property="runcontact" jdbcType="VARCHAR" />
+        <result column="runstate" property="runstate" jdbcType="CHAR" />
+        <result column="supply_code" property="supplyCode" jdbcType="CHAR" />
+        <result column="batch_bill" property="batchBill" jdbcType="CHAR" />
+        <result column="plan_code" property="planCode" jdbcType="VARCHAR" />
+        <result column="bind_code" property="bindCode" jdbcType="VARCHAR" />
+        <result column="inware_code" property="inwareCode" jdbcType="CHAR" />
+        <result column="is_toware" property="isToware" jdbcType="CHAR" />
+        <result column="balance_date" property="balanceDate" jdbcType="TIMESTAMP" />
+        <result column="spebill" property="spebill" jdbcType="VARCHAR" />
+        <result column="is_error" property="isError" jdbcType="CHAR" />
+        <collection property="whOutbillD" ofType="WhOutbillD">
+            <id column="itemcode" property="itemcode" jdbcType="CHAR" />
+            <id column="breadcode" property="breadcode" jdbcType="CHAR" />
+            <result column="storebill" property="storebill" jdbcType="CHAR" />
+            <result column="areacode" property="areacode" jdbcType="VARCHAR" />
+            <result column="itemname" property="itemname" jdbcType="VARCHAR" />
+            <result column="outbillCode" property="outbillcode" jdbcType="CHAR" />
+            <result column="breadname" property="breadname" jdbcType="VARCHAR" />
+            <result column="supply_code" property="supplyCode" jdbcType="CHAR" />
+            <result column="standard" property="standard" jdbcType="VARCHAR" />
+            <result column="steel_no" property="steelNo" jdbcType="VARCHAR" />
+            <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
+            <result column="fac_code" property="facCode" jdbcType="CHAR" />
+            <result column="unit_code" property="unitCode" jdbcType="CHAR" />
+            <result column="plan_num" property="planNum" jdbcType="DECIMAL" />
+            <result column="itemnum" property="itemnum" jdbcType="DECIMAL" />
+            <result column="item_piece" property="itemPiece" jdbcType="DECIMAL" />
+            <result column="itemsalevalue" property="itemsalevalue" jdbcType="DECIMAL" />
+            <result column="itemvalue" property="itemvalue" jdbcType="DECIMAL" />
+            <result column="pay" property="pay" jdbcType="DECIMAL" />
+            <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+            <result column="cremark" property="cremark" jdbcType="VARCHAR" />
+            <result column="containcode" property="containcode" jdbcType="CHAR" />
+            <result column="balance_date" property="balanceDate" jdbcType="CHAR" />
+            <result column="balance_price" property="balancePrice" jdbcType="DECIMAL" />
+            <result column="balance_time" property="balanceTime" jdbcType="TIMESTAMP" />
+            <result column="spebill" property="spebill" jdbcType="VARCHAR" />
+            <result column="is_error" property="isError" jdbcType="CHAR" />
+            <result column="uf_flag" property="ufFlag" jdbcType="CHAR" />
+            <result column="uf_flag1" property="ufFlag1" jdbcType="CHAR" />
+        </collection>
+    </resultMap>
+    <resultMap id="OutD" type="WhOutbillD">
+        <id column="itemcode" property="itemcode" jdbcType="CHAR" />
+        <id column="breadcode" property="breadcode" jdbcType="CHAR" />
+        <result column="storebill" property="storebill" jdbcType="CHAR" />
+        <result column="areacode" property="areacode" jdbcType="VARCHAR" />
+        <result column="itemname" property="itemname" jdbcType="VARCHAR" />
+        <result column="outbillCode" property="outbillcode" jdbcType="CHAR" />
+        <result column="breadname" property="breadname" jdbcType="VARCHAR" />
+        <result column="supply_code" property="supplyCode" jdbcType="CHAR" />
+        <result column="standard" property="standard" jdbcType="VARCHAR" />
+        <result column="steel_no" property="steelNo" jdbcType="VARCHAR" />
+        <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
+        <result column="fac_code" property="facCode" jdbcType="CHAR" />
+        <result column="unit_code" property="unitCode" jdbcType="CHAR" />
+        <result column="plan_num" property="planNum" jdbcType="DECIMAL" />
+        <result column="itemnum" property="itemnum" jdbcType="DECIMAL" />
+        <result column="item_piece" property="itemPiece" jdbcType="DECIMAL" />
+        <result column="itemsalevalue" property="itemsalevalue" jdbcType="DECIMAL" />
+        <result column="itemvalue" property="itemvalue" jdbcType="DECIMAL" />
+        <result column="pay" property="pay" jdbcType="DECIMAL" />
+        <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+        <result column="cremark" property="cremark" jdbcType="VARCHAR" />
+        <result column="containcode" property="containcode" jdbcType="CHAR" />
+        <result column="balance_date" property="balanceDate" jdbcType="CHAR" />
+        <result column="balance_price" property="balancePrice" jdbcType="DECIMAL" />
+        <result column="balance_time" property="balanceTime" jdbcType="TIMESTAMP" />
+        <result column="spebill" property="spebill" jdbcType="VARCHAR" />
+        <result column="is_error" property="isError" jdbcType="CHAR" />
+        <result column="uf_flag" property="ufFlag" jdbcType="CHAR" />
+        <result column="uf_flag1" property="ufFlag1" jdbcType="CHAR" />
+    </resultMap>
+
+    <sql id="column" >
+    outbillCode, sendbill, salebill, contactbill, tag, cust_code, custtype, ware_code,
+    project_code, outdate, pickbill, tell_man, identify_id, carrier, state, depart, billtype,
+    vehicle, driver, motorman_tel, remark, billman, stateman, billdate, statedate, tran_type,
+    input_flag, veh_type, send_type, runbill, runline, runprice, rununit, runcontact,
+    runstate, supply_code, batch_bill, plan_code, bind_code, inware_code, is_toware,
+    balance_date, spebill, is_error
+  </sql>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        select * from wh_outbill_h a
+        left JOIN wh_outbill_d b on a.outbillcode = b.outbillcode
+    </select>
+
+    <!--查询是否存在该出库材料-->
+    <select id="queryhaveItem" resultMap="OutD">
+        select * from wh_outbill_d where outbillcode = #{code} and storebill = #{id}
+    </select>
+
+
+
+    <!--查询要修改的材料信息-->
+    <select id="queryItem" parameterType="String" resultMap="BaseResultMap">
+        select * from wh_outbill_h a left JOIN wh_outbill_d b on
+        a.outbillcode = b.outbillcode where a.outbillCode = #{outbillCode}
+    </select>
+
+    <!--查询仓库名称-->
+    <select id="queryWareName" parameterType="String" resultType="BsWarehouse">
+        select wareCode,wareName from bs_warehouse
+    </select>
+
+    <!--修改材料-->
+    <update id="updateItem" parameterType="WhOutbillH">
+        update wh_outbill_h set
+        salebill = #{salebill},project_Code = #{projectCode},ware_Code = #{wareCode},
+        tag = #{tag},cust_Code = #{custCode},vehicle = #{vehicle},runline = #{runline},
+        driver = #{driver},motorman_Tel = #{motormanTel},sendbill = #{sendbill},
+        outdate = #{outdate},tran_Type = #{tranType},send_Type = #{sendType},
+        tell_Man = #{tellMan},identify_Id = #{identifyId}
+        where outbillcode = #{outbillcode}
+    </update>
+
+    <!--查询库存-->
+    <select id="queryItemStorage" resultMap="OutD">
+        select * from wh_outbill_d
+    </select>
+
+    <!--修改计划数量-->
+    <update id="updateStorage">
+        update wh_storage_d set plannum = plannum + #{plannum} where storebill = #{id}
+    </update>
+
+    <insert id="InsertOutBillD" parameterType="WhOutbillD">
+        insert into wh_outbill_d (storebill,itemcode,breadcode,standard,plan_num,itemnum,item_piece,outbillCode,breadname,itemname)
+        values (#{storebill},#{itemcode},#{breadcode},#{standard},#{planNum},#{itemnum},#{itemPiece},#{outbillcode},#{breadname},#{itemname})
+    </insert>
+
+    <insert id="insertWhOutbillH">
+    INSERT INTO `wh_outbill_h`
+    (`outbillCode`, `sendbill`, `salebill`, `contactbill`, `tag`,
+    `cust_code`, `custtype`, `ware_code`, `project_code`, `outdate`,
+     `pickbill`, `tell_man`, `identify_id`, `carrier`, `state`,
+     `depart`, `billtype`, `vehicle`, `driver`, `motorman_tel`,
+     `remark`, `billman`, `stateman`, `billdate`, `statedate`,
+      `tran_type`, `input_flag`, `veh_type`, `send_type`, `runbill`,
+       `runline`, `runprice`, `rununit`, `runcontact`, `runstate`,
+        `supply_code`, `batch_bill`, `plan_code`, `bind_code`,
+        `inware_code`, `is_toware`, `balance_date`, `spebill`, `is_error`)
+     VALUES (
+     #{outbillcode}, #{sendbill}, #{salebill}, #{contactbill}, #{tag},
+      #{custCode}, #{custtype}, #{wareCode}, #{projectCode}, #{outdate},
+       #{pickbill}, #{tellMan}, #{identifyId}, #{carrier}, #{state},
+        #{depart}, #{billtype}, #{vehicle}, #{driver}, #{motormanTel},
+        #{remark}, #{billman}, #{stateman}, #{billdate}, #{statedate},
+        #{tranType}, #{inputFlag}, #{vehType}, #{sendType}, #{runbill},
+        #{runline}, #{runprice}, #{rununit}, #{runcontact}, #{runstate},
+        #{supplyCode}, #{batchBill}, #{planCode}, #{bindCode},
+         #{inwareCode},#{isToware}, #{balanceDate}, #{spebill}, #{isError});
+
+</insert>
+    <select id="getWhOutbillHMaxId" resultType="String">
+    SELECT IFNULL(MAX(RIGHT(outbillCode,4)),'0000')  FROM wh_outbill_h
+</select>
+
+
+    <!--查询-->
+    <select id="queryOutItem" resultMap="OutD" parameterType="String">
+        select * from wh_outbill_d where outbillcode = #{id}
+    </select>
+
+    <!--修改实际出库数量库存-->
+    <update id="updateItemNum">
+        update wh_outbill_d set itemnum = #{num} where storebill = #{code}
+    </update>
+
+    <!--修改实际出库数量库存-->
+    <update id="updateHaveNum">
+        update wh_outbill_d set plan_num = plan_num + #{num} where storebill = #{code}
+    </update>
+
+    <!--修改实际库存-->
+    <update id="updateTrueNum" >
+        update wh_storage_d set itemnum = itemnum - #{num},plannum = plannum - #{planNum} where storebill = #{code}
+    </update>
+    <!--反审核实际库存-->
+    <update id="updateFalseNum">
+        update wh_storage_d set itemnum = itemnum + #{num},plannum = plannum + #{num} where storebill = #{code}
+    </update>
+
+    <!--修改是否出库-->
+    <update id="updateOutBillhState">
+        update wh_outbill_h set state = #{state} where outbillcode = #{code}
+    </update>
+
+    <!--查询计划出库数量-->
+    <select id="queryPlanNum" parameterType="String" resultMap="OutD">
+        select plan_num,storebill from wh_outbill_d where outbillcode = #{code}
+    </select>
+
+    <!--删除批次出库-->
+    <delete id="DelOutBillD" parameterType="String">
+        delete from wh_outbill_d where storebill = #{outbillcode}
+    </delete>
+
+    <!--删除后修改库存计划数量-->
+    <update id="DelupdatePlanNum" parameterType="String">
+        update wh_storage_d set plannum = 0 where storebill = #{storebill}
+    </update>
+
+    <!--查询品牌名称-->
+    <select id="queryBread" parameterType="String" resultType="BsBread">
+        select breadname from bs_bread where breadcode = #{breadcode}
+    </select>
+
+    <!--查询材料名称-->
+    <select id="queryItemName" resultType="String" parameterType="String">
+        select itemname from bs_newitem where itemcode = #{itemcode}
+    </select>
+</mapper>

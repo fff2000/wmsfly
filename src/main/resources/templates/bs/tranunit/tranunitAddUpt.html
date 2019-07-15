@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/oastyle/css/pintuer.css">
+    <link rel="stylesheet" href="/oastyle/css/admin.css">
+    <script src="/oastyle/js/jquery.js"></script>
+    <script src="/oastyle/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 新增供应商信息</strong></div>
+    <table class="table table-hover text-center">
+        <form id="addserve" th:action="@{/tranunit/add}" method="post">
+            <tr style="width: 150px">
+                <td>
+                    <span>运输单位编码</span>
+                    <input name="trancode" readonly th:text="${tranunit.trancode}" />
+                </td>
+                <td>
+                    <span>&nbsp;运输单位</span>
+                    <input id="tranname" name="tranname"  th:field="${tranunit.tranname}" />
+                    <font color="red" th:errors="${bsTranunit.tranname}" ></font>
+                    <span style="color: red">*</span>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所在城市</span>
+                    <input id="city" name="city" th:field="${tranunit.city}"/>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业务联系人</span>
+                    <input id="connecter" name="connecter" th:field="${tranunit.connecter}"/>
+                    <font color="red" th:errors="${bsTranunit.connecter}" ></font>
+                    <span style="color: red">*</span>
+                </td>
+                <td>
+                    <span>联系电话</span>
+                    <input id="tel" name="tel" th:field="${tranunit.tel}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;传真</span>
+                    <input id="fax"  name="fax" th:field="${tranunit.fax}"/>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;运输能力</span>
+                    <input id="tranpower" name="tranpower" th:field="${tranunit.tranpower}"/>
+                </td>
+                <td>
+                    <span>通讯地址</span>
+                    <input id="addr" name="addr" th:field="${tranunit.addr}"/>
+                </td>
+                <td>
+                    <span>&nbsp;法人代表</span>
+                    <input  id="corporation" name="corporation"  th:field="${tranunit.corporation}"/>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;负责人手机</span>
+                    <input id="principaltel" name="principaltel" th:field="${tranunit.principaltel}"/>
+                    <font color="red" th:errors="${bsTranunit.principaltel}" ></font>
+                    <span style="color: red">*</span>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;营业执照</span>
+                    <input id="charter" name="charter" th:field="${tranunit.charter}"/>
+                </td>
+                <td>
+                    <span>注册资金</span>
+                    <input  id="enrol" name="enrol" th:field="${tranunit.enrol}"/>
+                    <font color="red" th:errors="${bsTranunit.enrol}" ></font>
+                    <span style="color: red">*</span>
+                </td>
+            </tr>
+            <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联系人手机</span>
+                    <input id="linktel" name="linktel" th:field="${tranunit.linktel}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;国税号</span>
+                    <input id="taxcode" name="taxcode" th:field="${tranunit.taxcode}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开户银行</span>
+                    <input  id="bank" name="bank" th:field="${tranunit.bank}" />
+                </td>
+            </tr>  <tr style="width: 150px">
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开户账号</span>
+                    <input id="accounts" name="accounts" th:field="${tranunit.accounts}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公司网址</span>
+                    <input id="httpadr" name="httpadr" th:field="${tranunit.httpadr}"/>
+                </td>
+                <td>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;备注</span>
+                    <input  id="memo" name="memo" th:field="${tranunit.memo}" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" align="right">
+                    <input type="submit" class="button border-main" onclick="$('#addserve').submit()"value="提交" style="padding: 8px 13px;"/>
+                    <a class="button border-main" href="/tranunit/list" style="padding: 8px 13px;">
+                        <span class="icon-edit"></span> 返回
+                    </a>
+                </td>
+            </tr>
+        </form>
+    </table>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.bs.dao.BsVehicleMapper">
+  <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.BsVehicle">
+    <result column="vehicleId" jdbcType="VARCHAR" property="vehicleid" />
+    <result column="tranCode" jdbcType="CHAR" property="trancode" />
+    <result column="vehicleCode" jdbcType="VARCHAR" property="vehiclecode" />
+    <result column="companyId" jdbcType="CHAR" property="companyid" />
+    <result column="runcode" jdbcType="VARCHAR" property="runcode" />
+    <result column="drivecode" jdbcType="VARCHAR" property="drivecode" />
+    <result column="buycode" jdbcType="VARCHAR" property="buycode" />
+    <result column="city" jdbcType="CHAR" property="city" />
+    <result column="plant" jdbcType="VARCHAR" property="plant" />
+    <result column="makesdate" jdbcType="TIMESTAMP" property="makesdate" />
+    <result column="vehicleLong" jdbcType="VARCHAR" property="vehiclelong" />
+    <result column="realLong" jdbcType="DECIMAL" property="reallong" />
+    <result column="vehicleType" jdbcType="CHAR" property="vehicletype" />
+    <result column="realWide" jdbcType="DECIMAL" property="realwide" />
+    <result column="plantmodel" jdbcType="VARCHAR" property="plantmodel" />
+    <result column="framemodel" jdbcType="VARCHAR" property="framemodel" />
+    <result column="motormodel" jdbcType="VARCHAR" property="motormodel" />
+    <result column="underpan" jdbcType="DECIMAL" property="underpan" />
+    <result column="loading" jdbcType="DECIMAL" property="loading" />
+    <result column="maxloading" jdbcType="DECIMAL" property="maxloading" />
+    <result column="vehiclecolor" jdbcType="VARCHAR" property="vehiclecolor" />
+    <result column="runlong" jdbcType="DECIMAL" property="runlong" />
+    <result column="checkDate" jdbcType="TIMESTAMP" property="checkdate" />
+    <result column="driver" jdbcType="VARCHAR" property="driver" />
+    <result column="driverId" jdbcType="VARCHAR" property="driverid" />
+    <result column="insureDate" jdbcType="TIMESTAMP" property="insuredate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+
+
+  <select id="getVehicleAll"  resultType="com.obtk.wmsfly.domain.BsVehicle">
+    select * from bs_vehicle where 1 = 1
+    <if test="context != null  and context != ''">
+      and vehicleid like '%${context}%'
+      or companyid like '%${context}%'
+      or driver like '%${context}%'
+      or maxloading like '%${context}%'
+      or trancode like '%${context}%'
+    </if>
+  </select>
+
+  <insert id="addVehicle">
+   insert into bs_vehicle
+	(vehicleId,
+	tranCode,
+	vehicleCode,
+	companyId,
+	runcode,
+	drivecode,
+	buycode,
+	city,
+	plant,
+	makesdate,
+	vehicleLong,
+	realLong,
+	vehicleType,
+	realWide,
+	plantmodel,
+	framemodel,
+	motormodel,
+	underpan,
+	loading,
+	maxloading,
+	vehiclecolor,
+	runlong,
+	checkDate,
+	driver,
+	driverId,
+	insureDate,
+	remark
+	)
+	values
+	(#{vehicleid},
+	#{trancode},
+	#{vehiclecode},
+	#{companyid},
+	#{runcode},
+	#{drivecode},
+	#{buycode},
+	#{city},
+	#{plant},
+	#{makesdate},
+	#{vehiclelong},
+	#{reallong},
+	#{vehicletype},
+	#{realwide},
+	#{plantmodel},
+	#{framemodel},
+	#{motormodel},
+	#{underpan},
+	#{loading},
+	#{maxloading},
+	#{vehiclecolor},
+	#{runlong},
+	#{checkdate},
+	#{driver},
+	#{driverid},
+	#{insuredate},
+	#{remark}
+	);
+  </insert>
+
+  <delete id="deleVehicle" parameterType="java.util.List">
+    delete from bs_vehicle where  vehicleid in
+    <foreach collection="list" item="ids" open="(" close=")" separator=",">
+      #{ids,jdbcType=VARCHAR}
+    </foreach>
+  </delete>
+
+  <select id="getVehicleById" resultType="com.obtk.wmsfly.domain.BsVehicle">
+    select * from bs_vehicle where vehicleId = #{id}
+  </select>
+
+  <update id="updatebsVehicle" parameterType="BsVehicle">
+	UPDATE wmsdb.bs_vehicle
+	SET
+	tranCode =    #{trancode} ,
+	vehicleCode = #{vehiclecode} ,
+	companyId =   #{companyid},
+	runcode =     #{runcode},
+	drivecode =   #{drivecode} ,
+	buycode =     #{buycode} ,
+	city =        #{city},
+	plant =       #{plant} ,
+	makesdate =   #{makesdate} ,
+	vehicleLong = #{vehiclelong} ,
+	realLong =    #{reallong},
+	vehicleType = #{vehicletype} ,
+	realWide =    #{realwide} ,
+	plantmodel =  #{plantmodel} ,
+	framemodel =  #{framemodel} ,
+	motormodel =  #{motormodel} ,
+	underpan =    #{underpan} ,
+	loading =     #{loading} ,
+	maxloading =  #{maxloading} ,
+	vehiclecolor =#{vehiclecolor} ,
+	runlong =    #{runlong},
+	checkDate =  #{checkdate} ,
+	driver =     #{driver} ,
+	driverId =   #{driverid},
+	insureDate = #{insuredate} ,
+	remark = 	 #{remark}
+	WHERE vehicleId = #{vehicleid};
+	</update>
+
+	<select id="getVehicleByMaxId" resultType="String">
+		SELECT IFNULL(MAX(vehicleCode),'0000') FROM bs_vehicle
+	</select>
+</mapper>

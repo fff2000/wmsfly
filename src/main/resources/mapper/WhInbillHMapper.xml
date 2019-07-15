@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.wh.dao.WhInbillHMapper">
+  <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.WhInbillH">
+    <result column="inbillCode" jdbcType="CHAR" property="inbillcode" />
+    <result column="billType" jdbcType="CHAR" property="billtype" />
+    <result column="oldbill" jdbcType="CHAR" property="oldbill" />
+    <result column="wareCode" jdbcType="CHAR" property="warecode" />
+    <result column="custName" jdbcType="VARCHAR" property="custname" />
+    <result column="contactbill" jdbcType="VARCHAR" property="contactbill" />
+    <result column="supplyName" jdbcType="VARCHAR" property="supplyname" />
+    <result column="serverbill" jdbcType="VARCHAR" property="serverbill" />
+    <result column="indate" jdbcType="TIMESTAMP" property="indate" />
+    <result column="tellMan" jdbcType="VARCHAR" property="tellman" />
+    <result column="tranType" jdbcType="CHAR" property="trantype" />
+    <result column="carrier" jdbcType="CHAR" property="carrier" />
+    <result column="vehicle" jdbcType="VARCHAR" property="vehicle" />
+    <result column="driver" jdbcType="VARCHAR" property="driver" />
+    <result column="identify_id" jdbcType="VARCHAR" property="identifyId" />
+    <result column="motorman_tel" jdbcType="VARCHAR" property="motormanTel" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="billman" jdbcType="VARCHAR" property="billman" />
+    <result column="billdate" jdbcType="TIMESTAMP" property="billdate" />
+    <result column="stateman" jdbcType="VARCHAR" property="stateman" />
+    <result column="statedate" jdbcType="TIMESTAMP" property="statedate" />
+    <result column="state" jdbcType="CHAR" property="state" />
+    <result column="depart" jdbcType="CHAR" property="depart" />
+    <result column="vehType" jdbcType="CHAR" property="vehtype" />
+    <result column="runbill" jdbcType="CHAR" property="runbill" />
+    <result column="runline" jdbcType="VARCHAR" property="runline" />
+    <result column="inbuyman" jdbcType="VARCHAR" property="inbuyman" />
+    <result column="purType" jdbcType="CHAR" property="purtype" />
+    <result column="bindCode" jdbcType="VARCHAR" property="bindcode" />
+    <result column="senddate" jdbcType="TIMESTAMP" property="senddate" />
+  </resultMap>
+  <select id="findWhIndillH" resultType="WhInbillH">
+    select * from wh_inbill_h
+  </select>
+
+	<sql id="WhIndillH">
+		inbillCode,oldbill,wareCode warecode,supplyName supplyname,custName custname,tranType trantype,carrier,vehicle,driver,identify_id identifyId,contactbill,
+		serverbill,motorman_tel motormanTel,purType purtype,tellMan tellman,senddate,indate,remark
+	</sql>
+	<select id="getWhInbillHById" resultType="WhInbillH">
+		select <include refid="WhIndillH" /> from wh_inbill_h where inbillCode = #{id}
+	</select>
+
+  <select id="getWhIndillHMaxId" resultType="String">
+        SELECT IFNULL(MAX(RIGHT(inbillcode,4)),'0000')  FROM wh_inbill_h
+  </select>
+	<resultMap id="getInbillAndWareh" type="WhInbillH">
+		<id property="inbillcode" column="inbillCode"></id>
+		<result property="bindcode" column="bindCode"></result>
+		<result property="supplyname" column="supplyName"></result>
+		<association property="bsWarehouse" javaType="BsWarehouse">
+			<result property="warename" column="wareName"></result>
+		</association>
+		<collection property="whInbillDList" javaType="WhInbillD">
+			<result property="itemname" column="itemname"></result>
+			<result property="breadname" column="breadname"></result>
+			<result property="itemnum" column="itemnum"></result>
+		</collection>
+	</resultMap>
+
+	<update id="updateInbillHState">
+		update 	wh_inbill_h set state = '1' where inbillCode = #{id} ;
+	</update>
+	<delete id="delInbillH">
+		delete  from wh_inbill_h where inbillCode = #{id} and state = "0"
+	</delete>
+	<select id="getWhInbillH" resultMap="getInbillAndWareh">
+ 	 SELECT a.bindCode,a.inbillCode,a.indate,c.wareName,a.supplyName,b.itemname,b.breadname,b.itemnum,a.billman,a.state  FROM wh_inbill_h a
+	 right JOIN wh_inbill_d b
+	ON a.inbillCode = b.inbillCode
+	LEFT JOIN bs_warehouse c
+	ON a.wareCode = c.wareCode
+	</select>
+	<select id="getWhoutbilhState" resultType="Integer">
+		SELECT COUNT(state = 1) FROM wh_outbill_h a
+		RIGHT JOIN wh_outbill_d b
+		ON a.outbillCode = b.outbillCode
+		WHERE b.storebill LIKE '${id}%'
+	</select>
+	<select id="getInbillHState" resultType="WhInbillH">
+		select * from 	wh_inbill_h where inbillCode = #{id} and state = '0'
+	</select>
+	<update id="updateInbillHreverseState">
+		update wh_inbill_h set state = '0' where inbillCode = #{id}
+	</update>
+	<update id="updateInbillH">
+	UPDATE wmsdb.wh_inbill_h
+	SET
+	oldbill = #{oldbill} ,
+	wareCode = #{warecode} ,
+	custName = #{custname} ,
+	contactbill = #{contactbill} ,
+	supplyName = #{supplyname} ,
+	serverbill = #{serverbill} ,
+	indate = #{indate} ,
+	tellMan = #{tellman} ,
+	tranType = #{trantype} ,
+	carrier = #{carrier} ,
+	vehicle = #{vehicle} ,
+	driver = #{driver} ,
+	identify_id = #{identifyId} ,
+	motorman_tel =#{motormanTel} ,
+	remark = #{remark},
+	billman = #{billman} ,
+	billdate = #{billdate} ,
+	stateman = #{stateman} ,
+	statedate = #{statedate} ,
+	vehType = #{vehtype} ,
+	purType = #{purtype} ,
+	senddate = #{senddate}
+	WHERE
+	inbillCode = #{inbillcode} ;
+
+	</update>
+
+  <insert id="insertWhIndillH">
+    INSERT INTO wh_inbill_h
+	(
+	inbillCode,
+	billType,
+	oldbill,
+	wareCode,
+	custName,
+	contactbill,
+	supplyName,
+	serverbill,
+	indate,
+	tellMan,
+	tranType,
+	carrier,
+	vehicle,
+	driver,
+	identify_id,
+	motorman_tel,
+	remark,
+	billman,
+	billdate,
+	stateman,
+	statedate,
+	state,
+	depart,
+	vehType,
+	runbill,
+	runline,
+	inbuyman,
+	purType,
+	bindCode,
+	senddate
+	)
+	VALUES
+	(
+	#{inbillcode},
+	#{billtype},
+	#{oldbill},
+	#{warecode},
+	#{custname},
+	#{contactbill},
+	#{supplyname},
+	#{serverbill},
+	#{indate},
+	#{tellman},
+	#{trantype},
+	#{carrier},
+	#{vehicle},
+	#{driver},
+	#{identifyId},
+	#{motormanTel},
+	#{remark},
+	#{billman},
+	#{billdate},
+	#{stateman},
+	#{statedate},
+	#{state},
+	#{depart},
+	#{vehtype},
+	#{runbill},
+	#{runline},
+	#{inbuyman},
+	#{purtype},
+	#{bindcode},
+	#{senddate}
+	);
+  </insert>
+
+</mapper>

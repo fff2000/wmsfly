@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.obtk.wmsfly.sys.dao.SysBbsMapper">
+    <!--由于application.properties配置文件中，声明了实体类在哪个包下
+    所以直接写SysBbs就行。
+    如果不声明：必须写全 com.obtk.wmsfly.domain.SysBbs
+    --><!--keyProperty="bbsId"-->
+    <insert id="insertBbs" useGeneratedKeys="true" keyProperty="bbsId"  parameterType="SysBbs">
+    insert into sys_bbs(bbsId,title,publicDate,stopDate,billMan,billDate,content)
+    values (#{bbsId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{publicDate,jdbcType=VARCHAR}, #{stopDate,jdbcType=VARCHAR}, #{billMan,jdbcType=VARCHAR}, #{billDate,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR})
+    </insert>
+    <!--根据条件查询返回hashmap-->
+    <select id="findByBbs" parameterType="SysBbs" resultType="java.util.HashMap">
+
+        SELECT * FROM SYS_BBS WHERE 1=1
+        <if test="title != null  and title != '' ">
+            and title like '%${title}%'
+        </if>
+    </select>
+    <!-- 根据id查询数据表中的一条记录，并封装SysBbs对象 -->
+    <select id="findById" resultType="SysBbs">
+      select * from sys_bbs where bbsId= #{bbsId}
+    </select>
+
+    <delete id="deleteById" parameterType="java.util.List">
+     delete from sys_bbs where  bbsId in  (${ids})
+</delete>
+    <update id="updateById" parameterType="SysBbs">
+        update sys_bbs
+        <set>
+            <if test="title != null">title=#{title},</if>
+            <if test="publicDate != null">publicDate=#{publicDate},</if>
+            <if test="stopDate != null">stopDate=#{stopDate}</if>
+        </set>
+        where bbsId=#{bbsId}
+    </update>
+</mapper>

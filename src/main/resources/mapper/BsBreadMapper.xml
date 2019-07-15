@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.obtk.wmsfly.bs.dao.BsBreadMapper" >
+
+    <insert id="insertBs"  parameterType="BsBread">
+        INSERT INTO bs_bread(breadCode,breadName,state)
+         VALUES (#{breadcode},#{breadname}, #{state})
+    </insert>
+
+    <select id="getBsbreadMaxId" resultType="String">
+          SELECT IFNULL(MAX(breadCode),'000') FROM bs_bread
+    </select>
+
+    <select id="findByAll"  resultType="BsBread" parameterType="string">
+        SELECT * FROM bs_bread WHERE 1=1
+        <if test="context != null  and context != '' ">
+            and breadCode like '%${context}%'
+            or breadName like '%${context}%'
+        </if>
+    </select>
+
+    <delete id="deleteById">
+         delete from bs_bread where breadCode = ${ids} and state = '0'
+    </delete>
+
+    <select id="findBystate"  resultType="BsBread" parameterType="string">
+        SELECT * FROM bs_bread WHERE state=#{context}
+    </select>
+
+    <!-- 根据id查询数据表中的一条记录，并封装SysBbs对象 -->
+    <select id="findById" resultType="BsBread">
+      select * from bs_bread where breadCode= #{breadCode}
+    </select>
+    <!-- 更新-->
+    <update id="updateById" parameterType="BsBread">
+        update bs_bread
+        <set>
+            <if test="breadname != null">breadName=#{breadname},</if>
+            <if test="state != null">state=#{state}</if>
+        </set>
+        where breadCode=#{breadcode}
+    </update>
+
+    <select id="getBsbreeadName" resultType="BsBread">
+        select breadcode,breadname,state from bs_bread where state = '1'
+    </select>
+</mapper>

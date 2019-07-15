@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.wh.dao.WhInbillDMapper">
+  <select id="getInbillDMaxId" resultType="String">
+     SELECT IFNULL(MAX(rowno),'000') FROM wh_inbill_d where inbillCode = #{id}
+  </select>
+	<resultMap id="getInbillAndWareh" type="WhInbillD">
+		<id property="rowno" column="rowno"></id>
+		<result property="itemname" column="itemname"></result>
+		<result property="breadname" column="breadname"></result>
+		<result property="itemnum" column="itemnum"></result>
+		<result property="itemcode" column="itemcode"></result>
+		<result property="breadcode" column="breadcode"></result>
+		<association property="whInbillH" javaType="WhInbillH">
+			<result property="bindcode" column="bindCode"></result>
+			<result property="inbillcode" column="inbillCode"></result>
+			<result property="billman" column="billman"></result>
+			<result property="indate" column="indate"></result>
+			<result property="state" column="state"></result>
+			<result property="billdate" column="billdate"></result>
+			<result property="supplyname" column="supplyName"></result>
+			<result property="warecode" column="wareCode"></result>
+			<association property="bsWarehouse" javaType="BsWarehouse">
+				<result property="warename" column="wareName"></result>
+			</association>
+		</association>
+	</resultMap>
+	<select id="getWhInbillD" resultMap="getInbillAndWareh">
+ 	 SELECT a.bindCode,a.inbillCode,b.rowno,a.indate,c.wareName,a.supplyName,b.itemname,b.breadname,b.itemcode,b.breadcode,a.wareCode,b.itemnum,a.billman,a.state,a.billdate   FROM wh_inbill_h a
+	 left JOIN wh_inbill_d b
+	 ON a.inbillCode = b.inbillCode
+	 LEFT JOIN bs_warehouse c
+	 ON a.wareCode = c.wareCode
+	 where 1 = 1
+	 <if test="result != null and result != ''">
+		 and a.inbillCode like '%${result}%'
+		 or b.itemname like '%${result}%'
+	 </if>
+	</select>
+
+
+
+	<resultMap id="getWhInbill" type="WhInbillD">
+		<id property="rowno" column="rowno"></id>
+		<result property="itemname" column="itemname"></result>
+		<result property="breadname" column="breadname"></result>
+		<result property="sendNum" column="sendNum"></result>
+		<result property="itemnum" column="itemnum"></result>
+		<association property="whInbillH" javaType="WhInbillH">
+			<result property="indate" column="indate"></result>
+		</association>
+	</resultMap>
+    <select id="getWhInbillDById" resultMap="getWhInbill">
+       SELECT * FROM wh_inbill_d a
+		LEFT JOIN wh_inbill_h b
+		ON a.inbillCode = b.inbillCode
+		WHERE a.inbillCode = #{id}
+    </select>
+	<select id="getWhInbillDAndId" resultType="WhInbillD">
+		select * from wh_inbill_d where rowno = #{rowno} and inbillCode = #{id}
+	</select>
+
+  	<delete id="delInbillD" parameterType="java.util.List">
+		delete from wh_inbill_d where inbillCode = #{id} and rowno in
+		 <foreach collection="ids" item="ids" open="(" close=")" separator=",">
+			#{ids}
+		</foreach>
+  	</delete>
+ 	<select id="getWhInbillDList" resultType="WhInbillD">
+			select * from wh_inbill_d where inbillCode = #{id}
+	</select>
+
+
+  <update id="updateInbillD">
+	UPDATE wmsdb.wh_inbill_d
+	SET
+	itemcode =  #{itemcode} ,
+	itemname =  #{itemname} ,
+	breadcode = #{breadcode} ,
+	breadname = #{breadname} ,
+	itemnum =   #{itemnum} ,
+	sendNum =   #{sendNum}
+	WHERE
+	rowno = #{rowno};
+  </update>
+
+  <insert id="insertInbillD">
+        INSERT INTO wmsdb.wh_inbill_d
+	(rowno,
+	inbillCode,
+	itemcode,
+	itemname,
+	breadcode,
+	breadname,
+	standard,
+	steelNo,
+	facCode,
+	unitCode,
+	itemnum,
+	sendNum,
+	itemPiece,
+	price,
+	itemvalue,
+	barcode,
+	cremark,
+	car_no,
+	carry_price,
+	run_price,
+	checkman,
+	checkdate,
+	is_blanace,
+	is_prize,
+	purveybill,
+	balanceTme,
+	spebill,
+	is_error,
+	is_monthbalance
+	)
+	VALUES
+	(
+	#{rowno},
+	#{inbillcode},
+	#{itemcode},
+	#{itemname},
+	#{breadcode},
+	#{breadname},
+	#{standard},
+	#{steelNo},
+	#{facCode},
+	#{unitCode},
+	#{itemnum},
+	#{sendNum},
+	#{itemPiece},
+	#{price},
+	#{itemvalue},
+	#{barcode},
+	#{cremark},
+	#{carNo},
+	#{carryPrice},
+	#{runPrice},
+	#{checkman},
+	#{checkdate},
+	#{isBlanace},
+	#{isPrize},
+	#{purveybill},
+	#{balanceTme},
+	#{spebill},
+	#{isError},
+	#{isMonthbalance}
+	);
+
+  </insert>
+</mapper>

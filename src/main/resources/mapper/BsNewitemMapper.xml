@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.bs.dao.BsNewitemMapper">
+    <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.BsNewitem">
+        <result column="itemcode" jdbcType="CHAR" property="itemcode"/>
+        <result column="itemtypeCode" jdbcType="VARCHAR" property="itemtypecode"/>
+        <result column="itemName" jdbcType="VARCHAR" property="itemname"/>
+        <result column="oldcode" jdbcType="VARCHAR" property="oldcode"/>
+        <result column="breadCode" jdbcType="CHAR" property="breadcode"/>
+        <result column="gradeCode" jdbcType="CHAR" property="gradecode"/>
+        <result column="unitCode" jdbcType="CHAR" property="unitcode"/>
+        <result column="unitNum" jdbcType="INTEGER" property="unitnum"/>
+        <result column="itemLen" jdbcType="DECIMAL" property="itemlen"/>
+        <result column="width" jdbcType="DECIMAL" property="width"/>
+        <result column="height" jdbcType="DECIMAL" property="height"/>
+        <result column="weight" jdbcType="DECIMAL" property="weight"/>
+        <result column="volumn" jdbcType="DECIMAL" property="volumn"/>
+        <result column="itemValue" jdbcType="DECIMAL" property="itemvalue"/>
+        <result column="state" jdbcType="CHAR" property="state"/>
+        <result column="saleprice" jdbcType="DECIMAL" property="saleprice"/>
+        <result column="taxRate" jdbcType="DECIMAL" property="taxrate"/>
+    </resultMap>
+	
+	<resultMap id="itemtype" type="BsNewitem">
+		<id column="itemCode" property="itemcode"></id>
+		<result column="aname" property="itemname"></result>
+		<result column="unitCode" property="unitcode"></result>
+		<result column="saleprice" property="saleprice"></result>
+		<association property="bsItemtype" javaType="BsItemtype">
+			<id column="itemtypeCode" property="itemtypecode"></id>
+			<result column="itemName" property="itemname"></result>
+		</association>
+	</resultMap>
+	
+	<select id="getNewitemandtype" resultMap="itemtype">
+		SELECT a.itemCode,a.itemName aname,b.itemName,a.unitCode,a.saleprice FROM bs_newitem a
+		LEFT JOIN bs_itemtype b
+		ON a.itemtypeCode = b.itemtypeCode
+		where 1 = 1 and a.state = 1
+		<if test="name != null and name != ''">
+			and a.itemName like '%${name}%'
+		</if>
+	</select>
+	
+	<select id="getBsNewitemAll" resultType="BsNewitem">
+		 select * from bs_newitem
+	</select>
+
+    <select id="findBsNewitemList" resultType="BsNewitem">
+    select * from bs_newitem where itemtypecode = #{id}
+  </select>
+
+    <insert id="inserBsNewitem">
+    INSERT INTO bs_newitem
+	(itemcode,
+	itemtypeCode,
+	itemName,
+	oldcode,
+	breadCode,
+	gradeCode,
+	unitCode,
+	unitNum,
+	itemLen,
+	width,
+	height,
+	weight,
+	volumn,
+	itemValue,
+	state,
+	saleprice,
+	taxRate
+	)
+	VALUES
+	(
+	#{itemcode},
+	#{itemtypecode},
+	#{itemname},
+	#{oldcode},
+	#{breadcode},
+	#{gradecode},
+	#{unitcode},
+	#{unitnum},
+	#{itemlen},
+	#{width},
+	#{height},
+	#{weight},
+	#{volumn},
+	#{itemvalue},
+	#{state},
+	#{saleprice},
+	#{taxrate}
+	);
+  </insert>
+
+	<select id="getBsNewitemMaxId" resultType="String">
+		select  IFNULL(MAX(itemcode),0) from  bs_newitem
+	</select>
+
+	<update id="updateBsNewitem">
+		UPDATE wmsdb.bs_newitem
+	SET
+	itemName = #{itemname} ,
+	oldcode = #{oldcode},
+	breadCode = #{breadcode} ,
+	gradeCode = #{gradecode} ,
+	unitCode = #{unitcode} ,
+	unitNum = #{unitnum},
+	itemLen = #{itemlen} ,
+	width = #{width} ,
+	height = #{height} ,
+	weight = #{weight} ,
+	volumn = #{volumn} ,
+	itemValue = #{itemvalue} ,
+	state = #{state},
+	saleprice = #{saleprice} ,
+	taxRate = #{taxrate}
+	WHERE
+	itemcode = #{itemcode} ;
+	</update>
+
+	<select id="getBsNewitemById" resultType="BsNewitem">
+		select * from bs_newitem where itemcode = #{itemcode}
+	</select>
+
+	<delete id="deleBsNewitemById">
+		delete from bs_newitem where itemcode = #{id} and state = '0'
+	</delete>
+</mapper>

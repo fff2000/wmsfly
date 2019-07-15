@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>配送出库</title>
+    <div th:include="common/head"></div>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head">
+        <strong class="icon-reorder"> 配送出库信息</strong>
+        <a class="button border-red" href="/outH/Insert" style="padding: 2px 8px;float: right">
+            <span class="icon-plus-square-o"></span>&nbsp;添加
+        </a>
+    </div>
+    <table width="100%" class="table table-hover text-center">
+        <tr>
+            <th></th>
+            <th>提单号</th>
+            <th>供应商名</th>
+            <th>材料名</th>
+            <th>品牌名</th>
+            <th>标段</th>
+            <th>计划数</th>
+            <th>实发数</th>
+            <th>销售单价</th>
+            <th>制单时间</th>
+            <th>是否出库</th>
+            <th>提货人</th>
+            <th>操作</th>
+        </tr>
+        <tr th:each="wh : ${page.list}">
+            <td  style="text-align:left; padding-left:20px;"><input type="checkbox" name="id[]"  />
+                <span></span>
+            </td>
+            <td th:text="${wh.outbillcode}"></td>
+            <td th:text="${wh.whOutbillD.getSupplyCode()}"></td>
+            <td th:text="${wh.whOutbillD.getItemname()}"></td>
+            <td th:text="${wh.whOutbillD.getBreadname()}"></td>
+            <td th:text="${wh.tag}"></td>
+            <td th:text="${wh.whOutbillD.getPlanNum()}">6</td>
+            <td th:text="${wh.whOutbillD.getItemnum()}"></td>
+            <td th:text="${wh.whOutbillD.getItemvalue()}"></td>
+            <td th:text="${#dates.format(wh.billdate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${wh.state == 0 ? '已出库' : '未出库'}"></td>
+            <td th:text="${wh.tellMan}"></td>
+            <td>
+                <div>
+                    <span th:if="${wh.state} == 0">
+                        <a class="button border-main" th:href="@{/outH/updateOutItem(outBillCode=${wh.outbillcode})}" style="padding: 2px 8px;">
+                            <span class="icon-edit"></span> 修改
+                        </a>
+                    </span>
+                    <span th:if="${wh.state} == 1">
+                        <a class="button border-main" th:href="@{/outH/updateOutItem(outBillCode=${wh.outbillcode},state=${wh.state})}" style="padding: 2px 8px;">
+                            <span class="icon-edit"></span> 查看
+                        </a>
+                    </span>
+                    <span th:if="${wh.state} == 0">
+    <a class="button border-red" th:href="@{/outH/Audit(code=${wh.outbillcode},id=${wh.whOutbillD.getStorebill()})}" style="padding: 2px 8px;">
+         审核
+    </a>
+</span>
+                    <span th:if="${wh.state} == 1">
+    <a class="button border-red" th:href="@{/outH/AuditNo(code=${wh.outbillcode},id=${wh.whOutbillD.getStorebill()})}" style="padding: 2px 8px;">
+        反审核
+    </a>
+</span>
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <!--<a class="button border-red" href="/bread/UserExcelDownloads" style="padding: 2px 8px;">-->
+                <!--<span class=""></span> 导出</a>-->
+            </td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+</div>
+</div>
+<div style="margin-left: 38%">
+    <a th:href="@{/outH/Index(start=1,state=${param.state},text=${param.text})}">[首  页]</a>
+    <span th:if="${page.pageNum}!=1">
+            <a th:href="@{/outH/Index(start=${page.pageNum-1},state=${param.state},text=${param.text})}">[上一页]</a>
+        </span>
+    <span th:if="${page.pageNum} != ${page.pages}">
+            <a th:href="@{/outH/Index(start=${page.pageNum+1},state=${param.state},text=${param.text})}">[下一页]</a>
+        </span>
+    <a th:href="@{/outH/Index(start=${page.pages},state=${param.state},text=${param.text})}">[末  页]</a>
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        $(".delBread").click(function () {
+            if(confirm("您确认要删除选中的内容吗？")){
+                var id = $(this).parent().parent().parent().find("#breadcode").text();
+            }
+        })
+    })
+    //全选
+    $("#checkall").click(function(){
+        $("input[name='id[]']").each(function(){
+            if (this.checked) {
+                this.checked = false;
+            }
+            else {
+                this.checked = true;
+            }
+        });
+    })
+    //批量删除
+    function DelSelect(){
+        var ids = "";
+        var Checkbox=false;
+        $("input[name='id[]']").each(function(){
+            if (this.checked==true) {
+                ids += this.value + ",";
+                Checkbox=true;
+            }
+        });
+        if (Checkbox){
+            var t=confirm("您确认要删除选中的内容吗？");
+            if (t==false) return false;
+
+        }else{
+            alert("请选择您要删除的内容!");
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

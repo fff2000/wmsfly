@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.bs.dao.BsServeHMapper">
+  <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.BsServeH">
+    <result column="serveCode" jdbcType="CHAR" property="servecode" />
+    <result column="serveName" jdbcType="VARCHAR" property="servename" />
+    <result column="header" jdbcType="VARCHAR" property="header" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="connecter" jdbcType="VARCHAR" property="connecter" />
+    <result column="mobiltel" jdbcType="VARCHAR" property="mobiltel" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="netaddr" jdbcType="VARCHAR" property="netaddr" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="custtype" jdbcType="VARCHAR" property="custtype" />
+    <result column="principal" jdbcType="VARCHAR" property="principal" />
+    <result column="accounts" jdbcType="VARCHAR" property="accounts" />
+    <result column="bank" jdbcType="VARCHAR" property="bank" />
+    <result column="countrytax" jdbcType="VARCHAR" property="countrytax" />
+  </resultMap>
+
+
+  <select id="listBsServe" resultType="BsServeH">
+    select * from bs_serve_h where 1=1
+      <if test="result != null and result != ''">
+        and  serveName like '%${result}%'
+         or  tel like '%${result}%'
+      </if>
+  </select>
+
+  <insert id="insertBsServe">
+    INSERT INTO bs_serve_h
+	(serveCode,
+	serveName,
+	header,
+	addr,
+	tel,
+	connecter,
+	mobiltel,
+	fax,
+	netaddr,
+	email,
+	custtype,
+	principal,
+	accounts,
+	bank,
+	countrytax
+	)
+	VALUES
+	(
+	#{servecode},
+	#{servename},
+	#{header},
+	#{addr},
+	#{tel},
+	#{connecter},
+	#{mobiltel},
+	#{fax},
+	#{netaddr},
+	#{email},
+	#{custtype},
+	#{principal},
+	#{accounts},
+	#{bank},
+	#{countrytax}
+	);
+  </insert>
+
+  <select id="getBsServeMaxId" resultType="String">
+ 		SELECT IFNULL(MAX(serveCode),'S0000') FROM bs_serve_h
+  </select>
+	<select id="getBsServeById" resultType="BsServeH">
+		select * from bs_serve_h where serveCode = #{id}
+	</select>
+
+	<update id="updateBsServe">
+	UPDATE bs_serve_h
+	SET
+	serveName = #{servename} ,
+	header = #{header} ,
+	addr = #{addr} ,
+	tel = #{tel} ,
+	connecter = #{connecter},
+	mobiltel = #{mobiltel} ,
+	fax = #{fax} ,
+	netaddr = #{netaddr} ,
+	email = #{email},
+	custtype = #{custtype} ,
+	principal = #{principal} ,
+	accounts = #{accounts},
+	bank = #{bank} ,
+	countrytax = #{countrytax}
+	WHERE
+	serveCode = #{servecode} ;
+	</update>
+
+
+	<delete id="delBsServe" parameterType="java.util.List">
+		delete from  bs_serve_h where serveCode in (${id})
+	</delete>
+</mapper>

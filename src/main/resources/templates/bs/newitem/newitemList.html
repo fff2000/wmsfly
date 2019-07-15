@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="zh-cn">
+<head>
+    <title>材料基本信息</title>
+    <div th:include="common/head"/>
+</head>
+<body>
+<form method="post" action="" id="listform">
+    <div class="panel admin-panel">
+        <div class="panel-head"><strong class="icon-reorder">材料基本信息</strong></div>
+        <input type="hidden" th:value="${upcode}" class="upcode">
+        <table class="table table-hover text-center">
+            <tr>
+                <th>序号</th>
+                <th>材料名称</th>
+                <th>单位</th>
+                <th>销售单价</th>
+                <th>启用状态</th>
+                <th>操作</th>
+            </tr>
+            <tr th:each="item : ${page.list}">
+                <td style="text-align:left; padding-left:20px;"><input type="checkbox" name="id[]" th:value="${{item.itemcode}}"/>
+                    <span th:text="${{itemStat.index+1}}"/></td>
+                <td th:text="${item.itemname}"></td>
+                <td th:text="${item.unitcode}"></td>
+                <td th:text="${item.itemvalue}"><font color="#00CC99">dd</font></td>
+                <div th:switch="${item.state}">
+                    <td  th:case="0">未启用</td>
+                    <td  th:case="1">已启用</td>
+                </div>
+                <td>
+                    <div><a class="button border-main" th:href="@{/newitem/toUpdate/} + ${item.itemcode} "  style="padding: 2px 8px;"><span
+                            class="icon-edit"></span> 修改</a><!--th:href="@{/bbs/list/del(idStr=${item.bbsId})}"-->
+                        <a class="button border-red" href="javascript:void(0)"
+                          th:onclick="del([[${item.itemcode}]])"
+                           style="padding: 2px 8px;"><span class="icon-trash-o"></span> 删除</a></div>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:left; padding:10px 0;padding-left:20px;">
+                    <input type="checkbox"   id="checkall"/>全选
+                </td>
+                <!-- <td><a class="button border-red" href="javascript:void(0)" style="padding: 2px 8px;"
+                        onclick="return DelSelect()">
+                     <span class="icon-trash-o"></span> 批量删除</a></td>--> <!--th:href="@{/newitem/toAdd/} + ${upcode}" th:onclick="toAdd([[${upcode}]])"-->
+                <td><a class="button border-main"  th:onclick="toAdd([[${upcode}]])" id="button" style="padding: 2px 8px;">
+                    <span class="icon-plus-square-o"></span> 新增</a>
+                </td>
+                <td><font style="color: red;" th:text="${msg}"></font></td>
+            </tr>
+            <tr>
+                <!--页脚：分页-->
+                <td colspan="8">
+                    <div class="pagelist">
+                        <a th:href="@{/newitem/list(start=1,upcode=${upcode})}">首页</a>
+                        <span th:if="${page.pageNum}!=1" style="border:0px">
+                        <a th:href="@{/newitem/list(start=${page.pageNum - 1},upcode=${upcode})}">上一页</a>
+                        </span>
+                        <span th:if="${page.pageNum} != ${page.pages}" style="border:0px">
+                        <a th:href="@{/newitem/list(start=${page.pageNum+1},upcode=${upcode})}">下一页</a>
+                        </span>
+                        <a th:href="@{/newitem/list(start=${page.pages},upcode=${upcode})}">尾页</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+    </div>
+
+
+</form>
+<script th:inline="javascript">
+    //搜索
+
+    function toAdd(upcode) {
+        console.log(upcode);
+        if(upcode == null || upcode == ''){
+            $.ajax({
+                method: 'GET',
+                url:"/newitem/toadd/" + upcode,
+                success:function (data) {
+                    alert(data.str);
+
+                }
+            })
+        }else {
+            $.ajax({
+                method: 'GET',
+                url:"/newitem/judgeAdd/" + upcode,
+                success:function (data) {
+                    if(data.msg != null){
+                        alert(data.msg)
+                    }else {
+                        window.location.href="/newitem/toAdd/" + upcode;
+                    }
+                }
+            })
+
+
+        }
+    }
+
+
+    //单个删除
+    function del(id)  {
+        alert(id);
+        if (confirm("您确定要删除吗?")) {
+            $.ajax({
+                type: "post",
+                url: "/newitem/del/" + id,
+                success: function (result) {
+                    console.log(result);
+                    if (result != null) {
+                        window.parent.newitemLeft.location.reload();
+                        window.location.reload();
+                    } else {
+                        return false;
+                    }
+                }
+            })
+        }
+    }
+
+
+    //全选
+   /* $("#checkall").click(
+        function () {
+            if (this.checked) {
+                $("input[name='id[]']").each(function () {
+                    this.checked = true;
+                });
+            } else {
+                $("input[name='id[]']").each(function () {
+                    this.checked = false;
+                });
+            }
+        }
+    );*/
+
+    //批量删除
+  /*  function DelSelect() {
+        var ids = "";
+        var Checkbox = false;
+        $("input[name='id[]']").each(function () {
+            if (this.checked == true) {
+                //获取选中复选框的主键值，用逗号隔开
+                ids += this.value + ",";
+                Checkbox = true;
+            }
+        });
+        if (Checkbox) {
+            var t = confirm("您确认要删除选中的内容吗？");
+            if (t == false)
+                return false;
+
+            $.ajax({
+                type: "post",
+                url: "/itemtype/del/"+ids,
+                success: function (result) {
+                    // result.code=true代表删除成功.
+                    if (result > 0) {
+                            window.parent.itemtypeLeft.location.reload();
+                            window.location.reload();
+                    } else {
+                        return false;
+                    }
+                }
+            });
+        }
+        else {
+            alert("请选择您要删除的内容!");
+            return false;
+        }
+    }*/
+
+</script>
+</body>
+</html>

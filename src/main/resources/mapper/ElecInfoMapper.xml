@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.bs.dao.ElecInfoMapper">
+
+    <resultMap id="getElecInfo" type="ElecInfo">
+        <id property="id" column="id"></id>
+        <result property="eleType" column="eleType"></result>
+        <result property="timeType" column="timeType"></result>
+        <result property="price" column="price"></result>
+        <association property="useElecType" javaType="UseElecType">
+            <id property="id" column="id"></id>
+            <result property="name" column="name"></result>
+        </association>
+    </resultMap>
+
+    <select id="findElecInfo" resultMap="getElecInfo">
+        SELECT a.id,b.name,a.eleType,a.timeType,a.price FROM elecinfo a
+        LEFT JOIN useelectype b
+        ON a.uid = b.id
+        where 1 = 1
+        <if test="id != null and id!=''">
+           and a.id = #{id}
+        </if>
+    </select>
+
+
+    <delete id="delElecInfo">
+        delete from elecinfo where id = #{id}
+    </delete>
+
+    <select id="findUseElecType" resultType="UseElecType">
+        select id,name from UseElecType
+    </select>
+
+    <select id="findElecInfoById" resultType="ElecInfo">
+
+    </select>
+
+    <insert id="insertElectInfo">
+        INSERT INTO elecinfo
+	(
+	uid,
+	eleType,
+	timeType,
+	price
+	)
+	VALUES
+	(
+	 #{uid},
+	 #{eleType},
+	 #{timeType},
+	 #{price}
+	);
+    </insert>
+</mapper>

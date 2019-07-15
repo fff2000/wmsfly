@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.bs.dao.BsWareareaMapper">
+  <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.BsWarearea">
+    <result column="warecode" jdbcType="CHAR" property="warecode" />
+    <result column="areatype" jdbcType="CHAR" property="areatype" />
+    <result column="areaCode" jdbcType="VARCHAR" property="areacode" />
+    <result column="blockcode" jdbcType="CHAR" property="blockcode" />
+    <result column="areaname" jdbcType="VARCHAR" property="areaname" />
+    <result column="areano" jdbcType="CHAR" property="areano" />
+    <result column="widthno" jdbcType="CHAR" property="widthno" />
+    <result column="lengthno" jdbcType="CHAR" property="lengthno" />
+    <result column="layerno" jdbcType="CHAR" property="layerno" />
+    <result column="areawidth" jdbcType="DECIMAL" property="areawidth" />
+    <result column="arealength" jdbcType="DECIMAL" property="arealength" />
+    <result column="areaarea" jdbcType="DECIMAL" property="areaarea" />
+    <result column="barcode" jdbcType="VARCHAR" property="barcode" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="capacity" jdbcType="DECIMAL" property="capacity" />
+    <result column="storenum" jdbcType="DECIMAL" property="storenum" />
+  </resultMap>
+</mapper>

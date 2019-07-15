@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.obtk.wmsfly.wh.dao.WhStorageMapper">
+    <resultMap id="BaseResultMap" type="WhStorageD" >
+        <id column="storebill" property="storebill" jdbcType="CHAR" />
+        <result column="itemcode" property="itemcode" jdbcType="CHAR" />
+        <result column="wareCode" property="warecode" jdbcType="VARCHAR" />
+        <result column="breadcode" property="breadcode" jdbcType="CHAR" />
+        <result column="standard" property="standard" jdbcType="CHAR" />
+        <result column="steel_no" property="steelNo" jdbcType="CHAR" />
+        <result column="fac_code" property="facCode" jdbcType="CHAR" />
+        <result column="unit_code" property="unitCode" jdbcType="CHAR" />
+        <result column="plannum" property="plannum" jdbcType="DECIMAL" />
+        <result column="itemnum" property="itemnum" jdbcType="DECIMAL" />
+        <result column="indate" property="indate" jdbcType="TIMESTAMP" />
+        <collection property="whOutbillD" ofType="WhOutbillD">
+            <id column="itemcode" property="itemcode" jdbcType="CHAR" />
+            <id column="breadcode" property="breadcode" jdbcType="CHAR" />
+            <result column="storebill" property="storebill" jdbcType="CHAR" />
+            <result column="areacode" property="areacode" jdbcType="VARCHAR" />
+            <result column="itemname" property="itemname" jdbcType="VARCHAR" />
+            <result column="outbillCode" property="outbillcode" jdbcType="CHAR" />
+            <result column="breadname" property="breadname" jdbcType="VARCHAR" />
+            <result column="supply_code" property="supplyCode" jdbcType="CHAR" />
+            <result column="standard" property="standard" jdbcType="VARCHAR" />
+            <result column="steel_no" property="steelNo" jdbcType="VARCHAR" />
+            <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
+            <result column="fac_code" property="facCode" jdbcType="CHAR" />
+            <result column="unit_code" property="unitCode" jdbcType="CHAR" />
+            <result column="plan_num" property="planNum" jdbcType="DECIMAL" />
+            <result column="itemnum" property="itemnum" jdbcType="DECIMAL" />
+            <result column="item_piece" property="itemPiece" jdbcType="DECIMAL" />
+            <result column="itemsalevalue" property="itemsalevalue" jdbcType="DECIMAL" />
+            <result column="itemvalue" property="itemvalue" jdbcType="DECIMAL" />
+            <result column="pay" property="pay" jdbcType="DECIMAL" />
+            <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+            <result column="cremark" property="cremark" jdbcType="VARCHAR" />
+            <result column="containcode" property="containcode" jdbcType="CHAR" />
+            <result column="balance_date" property="balanceDate" jdbcType="CHAR" />
+            <result column="balance_price" property="balancePrice" jdbcType="DECIMAL" />
+            <result column="balance_time" property="balanceTime" jdbcType="TIMESTAMP" />
+            <result column="spebill" property="spebill" jdbcType="VARCHAR" />
+            <result column="is_error" property="isError" jdbcType="CHAR" />
+            <result column="uf_flag" property="ufFlag" jdbcType="CHAR" />
+            <result column="uf_flag1" property="ufFlag1" jdbcType="CHAR" />
+        </collection>
+    </resultMap>
+    <sql id="column" >
+    storebill, itemcode, areaCode, breadcode, standard, steel_no, fac_code, unit_code,
+    plannum, itemnum, billType
+    </sql>
+
+    <!--查询所有-->
+    <select id="queryAll" resultMap="BaseResultMap" parameterType="String">
+        select * from wh_storage_d <!--where storebill = #{storebill}-->
+    </select>
+
+    <!--查询仓库-->
+    <select id="queryWare" resultType="BsWarehouse">
+        select warecode,warename from bs_warehouse
+    </select>
+
+    <!--查询品牌名称-->
+    <select id="queryBread" resultType="BsBread">
+        select breadCode,breadName from bs_bread
+    </select>
+
+    <!--查询材料名-->
+    <select id="queryItem" resultType="BsNewitem">
+        select itemcode,itemname from bs_newitem
+    </select>
+
+    <select id="findAll" resultType="WhStorage">
+        /*select * from vw_wh_storage*/
+
+        SELECT itemcode,breadcode,warecode,SUM(plannum) AS plannum ,SUM(itemnum) AS itemnum FROM wh_storage_d
+         WHERE 1=1
+        <if test="result != null and result != ''">
+            and  wareCode like '%${result}%'
+            or  itemcode like '%${result}%'
+            or  breadcode like '%${result}%'
+        </if>
+         GROUP BY itemcode,breadcode,warecode
+    </select>
+
+</mapper>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>材料分类设置</title>
+
+    <link href="/oastyle/css/bootstrap.css" rel="stylesheet">
+    <script src="/oastyle/js/jquery.js"></script>
+    <script src="/oastyle/js/bootstrap-treeview.js"></script>
+</head>
+<body>
+<div id="tree"></div>
+<script th:inline="javascript">
+    var tree = eval([[${str}]]);
+    function getTree() {
+        // Some logic to retrieve, or generate tree structure
+        return tree;
+    }
+            $('#tree').treeview({
+                data: getTree(),
+                enableLinks: true
+            });
+            $('#tree').on('nodeSelected',function(event, data) {
+                window.parent.newitemRight.location.href="/newitem/list?upcode="+data.value;
+    });
+</script>
+</body>
+</html>

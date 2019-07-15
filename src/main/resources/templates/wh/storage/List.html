@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>库存台账</title>
+</head>
+
+<body>
+<div th:include="common/head"></div>
+
+<div class="padding border-bottom">
+    <form  method="post" th:action = "@{/Storage/list}"  id="queryform">
+        <ul class="search" style="padding-left:10px;">
+            <li>搜索：</li>
+            <li>
+                <input type="text"  th:value="${param.context}" name="context" placeholder="请输入仓库/材料/品牌名称 " class="input" style="width:250px; line-height:17px;display:inline-block" />
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="button border-main icon-search" onclick="$('#queryform').submit()" > 搜索</a>
+            </li>
+        </ul>
+    </form>
+</div>
+
+<form method="post" action="" id="listform">
+    <div class="panel admin-panel">
+        <div class="panel-head"><strong class="icon-reorder">实时库存查询结果:</strong></div>
+        <table class="table table-hover text-center">
+            <tr>
+                <th>序号</th>
+                <th>仓库名称</th>
+                <th>材料名称</th>
+                <th>品牌名称</th>
+                <th>规格型号</th>
+                <th>库存数量</th>
+                <th>可配数量</th>
+
+            </tr>
+
+            <tr th:each="s : ${page.list}"ondblclick="show2()"id="show">
+                <td  style="text-align:center; padding-left:20px;">
+                    <span th:text="${{sStat.index+1}}"></span>
+                </td>
+                <td id="wareCode" th:text="${s.wareCode}"></td>
+                <td th:text="${s.itemcode}"></td>
+                <td th:text="${s.breadcode}"></td>
+                <td th:text="${s.item_Piece}"></td>
+                <td th:text="${s.plannum}"></td>
+                <td th:text="${s.itemnum}"></td>
+            </tr><tr>
+            <!--页脚：分页-->
+            <td colspan="8">
+                <div class="pagelist">
+                    <a th:href="@{/Storage/list(start=0)}">[首  页]</a>
+                    <a th:href="@{/Storage/list(start=${page.pageNum-1})}" onclick="page">[上一页]</a>
+                    <span th:if="${page.pageNum} != ${page.pages}" style="border:0px">
+                    <a th:href="@{/Storage/list(start=${page.pageNum+1})}">[下一页]</a>
+                    </span>
+                    <a th:href="@{/Storage/list(start=${page.pages})}">[尾  页]</a>
+                    共[[${page.total}]]条记录
+                </div>
+            </td>
+        </tr>
+        </table>
+    </div>
+</form>
+
+<div class="panel admin-panel"style="margin-top: 100px;display: none" id="show1">
+    <div class="panel-head"><strong class="icon-reorder">批次库存数据:</strong></div>
+    <table class="table table-hover text-center">
+        <tr>
+            <th>序号</th>
+            <th>批次库存</th>
+            <th>材料编码</th>
+            <th>品牌编码</th>
+            <th>仓库编码</th>
+            <th>件数</th>
+            <th>库存计划数量</th>
+            <th>库存实际数量</th>
+            <th>数据来源</th>
+            <th>入库日期</th>
+            <th>操作</th>
+        </tr>
+
+        <tr th:each="D : ${page1.list}">
+            <td  style="text-align:center; padding-left:20px;">
+                <span th:text="${{DStat.index+1}}"></span>
+            </td>
+            <td th:text="${D.storebill}"></td>
+            <td th:text="${D.itemcode}"></td>
+            <td th:text="${D.breadcode}"></td>
+            <td th:text="${D.warecode}"></td>
+            <td th:text="${D.unitcode}"></td>
+            <td th:text="${D.plannum}"></td>
+            <td th:text="${D.itemnum}"></td>
+            <td th:text="${D.fromTable}"></td>
+            <td th:text="${D.indate}"></td>
+            <td bgcolor><a href="/Storage/export"><button type="button" class="btn btn-primary">导出</button></a></td>
+        </tr>
+
+
+    </table>
+</div>
+
+
+<script>
+    //双击显示隐藏事件
+       function show2() {
+           if ($("#show1").css("display")=="none"){
+                    $("#show1").css("display","block");
+                }else{
+                    $("#show1").css("display","none");
+                }
+        }
+
+</script>
+</body>
+</html>

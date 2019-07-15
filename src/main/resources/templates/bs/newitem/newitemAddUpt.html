@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <div th:include="common/headEdit"/>
+    <title></title>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>添加材料基本信息</strong></div>
+    <div class="body-content">
+        <form method="post" class="form-x" th:action="@{/newitem/add}" id="itemtypeAdd">
+            <input type="hidden"  th:value="${upcode}"  name="upcode" id="upcode"/>
+            <table align="center" width="80%" style="border-collapse:separate; border-spacing:0px 10px;">
+                <tr>
+                    <td style="text-align:right ">
+                        <label>材料名称：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" name="itemname"  style="line-height: 25px;height: 25px;" th:field="${item.itemname}" >
+                        <span style="color:red" th:errors="${bsNewitem.itemname}"></span>
+                        <span style="color: red;" ></span>
+                    </td>
+                    <td style="text-align:right ">
+                        <label>销售单价：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" name="saleprice" th:field="${item.saleprice}"  style="line-height: 25px;height: 25px;"  >
+                        <span style="color: red;" ></span>
+                    </td>
+                   </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>助 记 码：</label>
+
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text"  style="line-height: 25px;height: 25px;"  th:field="${item.oldcode}" name="oldcode"  ></td>
+                    <td style="text-align:right ">
+                        <label>总价值：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text"  style="line-height: 25px;height: 25px;"  th:value="${item.itemvalue}" name="itemvalue"  ></td>
+                </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>品牌名称：</label>
+
+                    </td>
+                    <td style="text-align:left ">
+                        <select name="breadcode" class="selectpicker"     title="请选择品牌" data-live-search="true">
+                            <option th:each="b : ${bread}" th:selected="${item.breadcode == b.breadcode}" th:text="${b.getBreadname()}" th:value="${b.getBreadcode()}"></option>
+                        </select>
+                        <span style="color: red" th:errors="${bsNewitem.breadcode}"></span>
+                    </td>
+                        <td style="text-align:right ">
+                        <label>体积(方)：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text"  style="line-height: 25px;height: 25px;" th:field="${item.volumn}" name="volumn"  >
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>单位：</label>
+
+                    </td>
+                    <td style="text-align:left "><input type="text"  style="line-height: 25px;height: 25px;" th:field="${item.unitcode}" name="unitcode"  ></td>
+                    <td style="text-align:right ">
+                        <label>税率：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text"  style="line-height: 25px;height: 25px;" th:field="${item.taxrate}" name="taxrate"  ></td>
+                </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>单位数量：</label>
+                    </td>
+                    <td style="text-align:left "><input type="text"  style="line-height: 25px;height: 25px;" name="unitnum" th:field="${item.unitnum}" ></td>
+                    <td style="text-align:right ">
+                        <label>重量：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text"  style="line-height: 25px;height: 25px;" th:field="${item.weight}" name="weight" ></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>长：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text"  style="line-height: 25px;height: 25px;" th:field="${item.itemlen}" name="itemlen" ></td>
+                    <td style="text-align:right ">
+                        <label>宽：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text"  style="line-height: 25px;height: 25px;" name="width" th:field="${item.width}" ></td>
+                </tr>
+                <tr>
+                <td style="text-align:right ">
+                        <label>数据启用：</label>
+                    </td>
+                    <td style="text-align:left ">
+                            <select   name="state" th:value="${item.state}" style="width: 170px;line-height: 25px;height: 25px;"  id="selcet">
+                            <option  value="0">否</option>
+                            <option  value="1">是</option>
+                        </select>
+                    </td>
+                    <td style="text-align:right ">
+                        <label>高：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text"  style="line-height: 25px;height: 25px;" th:field="${item.height}" name="height" ></td>
+                    </tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <td colspan="4" style="text-align:center "><input class="button bg-main icon-check-square-o button-small" type="submit" id="button"  > </input></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script language="JavaScript">
+
+   $("#button").click(function () {
+       $.ajax({
+           url:"/newitem/add",
+           data:$("#itemtypeAdd").serialize(),
+           success:function (data) {
+               if (data.integer > 0) {
+                   window.parent.newitemLeft.location.reload();
+                   window.parent.newitemRight.location.href = "/itemtype/list";
+               }
+           }
+       })
+   })
+/*    $('#frm_bbsedit').submit(function(){
+        debugger;
+        submitForm();
+    });*/
+
+//校验后提交
+/*$("#frm_bbsedit").on("submit", function(ev) {
+    //阻止submit表单提交
+    ev.preventDefault(
+        $.ajax({
+            type: "post",
+            url: "/bbs/addUptSave?pid=",
+            data: $('#frm_bbsedit').serialize(),
+            success: function (result) {
+                console.log(result.code);
+                if (result.code) {
+                    alert("提交成功");
+                    window.location.href = "/bbs/list";
+                } else {
+                    // document.getElementById("testid").innerHTML= result.msg;
+                    alert("数据提交失败！");
+                    return false;
+                }
+            },
+            error: function (result) {
+                alert("error");
+            }})
+
+    );
+    return false;
+});*/
+    //校验成功后调用公共的提交方法 该方法调试有问题提时屏蔽
+  /*  function submitForm() {
+        alert("调用submitForm");
+        $.ajax({
+            type: "post",
+            url: "/bbs/addUptSave?pid=",
+            data: $('#frm_bbsedit').serialize(),
+            success: function (result) {
+                console.log(result.code);
+                alert("返回结果");
+                if (result.code) {
+                    alert("提交成功");
+                    window.location.href = "/bbs/list";
+                } else {
+                    // document.getElementById("testid").innerHTML= result.msg;
+                    alert("数据提交失败！");
+                    return false;
+                }
+            },
+            error: function (result) {
+                alert("error");
+            }
+        })
+    }*/
+</script>
+</body>
+</html>

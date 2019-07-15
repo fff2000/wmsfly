@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.bs.dao.BsItemtypeMapper">
+    <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.BsItemtype">
+        <result column="itemtypeCode" jdbcType="VARCHAR" property="itemtypecode"/>
+        <result column="upcode" jdbcType="VARCHAR" property="upcode"/>
+        <result column="oldcode" jdbcType="VARCHAR" property="oldcode"/>
+        <result column="itemName" jdbcType="VARCHAR" property="itemname"/>
+        <result column="accCode" jdbcType="VARCHAR" property="acccode"/>
+        <result column="accName" jdbcType="VARCHAR" property="accname"/>
+        <result column="step" jdbcType="INTEGER" property="step"/>
+        <result column="state" jdbcType="CHAR" property="state"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+    </resultMap>
+
+    <!--根据条件查询返回Node-->
+    <select id="getBsItemtypesTree" parameterType="BsItemtype" resultType="Node">
+        SELECT upcode as pid,itemname as name,itemtypecode as id FROM bs_itemtype WHERE 1=1
+        <if test="upcode != null  and upcode != '' ">
+            and upcode = #{upcode}
+        </if>
+    </select>
+
+
+    <!--查询材料是否启用-->
+    <select id="getItemtypeBystate" resultType="BsItemtype">
+        SELECT * FROM bs_itemtype WHERE itemtypeCode = #{id} AND state = '1'
+    </select>
+
+    <select id="getBsItemtypeByupcode" resultType="BsItemtype">
+        select * from bs_itemtype where 1 = 1
+        <if test="upcode != null and upcode != ''">
+            and upcode = #{upcode}
+        </if>
+    </select>
+
+    <select id="getBsItemtypeBy" resultType="String">
+        select count(itemtypeCode) from bs_itemtype where upcode = #{id}
+    </select>
+
+    <delete id="delBsItemtypeById">
+        delete from bs_itemtype where itemtypecode = #{ids} and state = '0'
+    </delete>
+
+    <insert id="addBsItemtype">
+        insert  into `bs_itemtype`(`itemtypeCode`,`upcode`,`oldcode`,`itemName`,`accCode`,`accName`,`step`,`state`,`price`)
+        values (#{itemtypecode},#{upcode},#{oldcode},#{itemname},#{acccode},#{accname},#{step},#{state},#{price})
+    </insert>
+
+    <select id="getBsItemtypeMaxId" resultType="String">
+        select MAX(itemtypeCode)  from bs_itemtype
+    </select>
+
+    <update id="updateBsItemtype">
+    UPDATE bs_itemtype
+	SET
+	oldcode = #{oldcode} ,
+	itemName = #{itemname} ,
+	accCode = #{acccode} ,
+	accName = #{accname} ,
+	step = #{step} ,
+	state = #{state} ,
+	price = #{price}
+	WHERE
+	itemtypeCode = #{itemtypecode} ;
+    </update>
+
+    <select id="getBsItemtypeById" resultType="BsItemtype">
+        select * from bs_itemtype where itemtypeCode = #{itemtypecode}
+    </select>
+</mapper>

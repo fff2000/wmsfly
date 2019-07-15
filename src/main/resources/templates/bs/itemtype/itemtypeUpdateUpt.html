@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <div th:include="common/headEdit"/>
+    <title></title>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>编辑公告信息</strong></div>
+    <div class="body-content">
+        <form method="post" class="form-x" th:action="@{/itemtype/update}" id="itemtypeUpdate">
+            <input type="hidden"  th:field="${item.itemtypecode}" name="itemtypecode" id="upcode"/>
+            <table align="center" width="80%" style="border-collapse:separate; border-spacing:0px 10px;">
+                <tr>
+                    <td style="text-align:right ">
+                        <label>名   称：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <input type="text" name="itemname"  style="line-height: 25px;height: 25px;" th:field="${item.itemname}" >
+                        <font style="color: red;" th:errors="${bsItemtype.itemname}"></font>
+                    </td>
+                   </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>助 记 码：</label>
+
+                    </td>
+                    <td style="text-align:left "><input type="text"  style="line-height: 25px;height: 25px;"  name="oldcode" th:field="${item.oldcode}" ></td>
+                </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>财务科目编码：</label>
+
+                    </td>
+                    <td style="text-align:left "><input type="text"  style="line-height: 25px;height: 25px;" name="acccode" th:field="${item.acccode}" ></td>
+                </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>委员会价：</label>
+
+                    </td>
+                    <td style="text-align:left "><input type="text"  style="line-height: 25px;height: 25px;" name="price" th:field="${item.price}" ></td>
+                </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>财务科目名称：</label>
+                    </td>
+                    <td style="text-align:left "><input type="text"  style="line-height: 25px;height: 25px;" name="accname" th:field="${item.accname}" ></td>
+                </tr>
+                <tr>
+                <td style="text-align:right ">
+                        <label>数据启用：</label>
+
+                    </td>
+                    <td style="text-align:left ">
+                            <select th:field="${item.state}"  name="state" style="width: 170px;line-height: 25px;height: 25px;"  id="selcet">
+                            <option   value="0">否</option>
+                            <option   value="1">是</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <td colspan="4" style="text-align:center "><input class="button bg-main icon-check-square-o button-small" type="submit" id="button" > </input></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script language="JavaScript">
+  /* function subTest(){
+        alert("提交事件，刷新树");
+       $('#itemtypeUpdate').submit();
+        window.parent.itemtypeLeft.location.reload();
+    };*/
+
+   $("#button").click(function () {
+       $.ajax({
+           url:"/itemtype/update",
+           data:$("#itemtypeUpdate").serialize(),
+           dataType:"json",
+           success:function (data) {
+               if(data.msg != null){
+                   alert(data.msg);
+               }
+               if(data.integer == 1){
+                   window.parent.itemtypeLeft.location.reload();
+                   window.parent.itemtypeRight.location.href="/itemtype/list";
+               }
+           }
+       })
+   })
+/*    $('#frm_bbsedit').submit(function(){
+        debugger;
+        submitForm();
+    });*/
+
+//校验后提交
+/*$("#frm_bbsedit").on("submit", function(ev) {
+    //阻止submit表单提交
+    ev.preventDefault(
+        $.ajax({
+            type: "post",
+            url: "/bbs/addUptSave?pid=",
+            data: $('#frm_bbsedit').serialize(),
+            success: function (result) {
+                console.log(result.code);
+                if (result.code) {
+                    alert("提交成功");
+                    window.location.href = "/bbs/list";
+                } else {
+                    // document.getElementById("testid").innerHTML= result.msg;
+                    alert("数据提交失败！");
+                    return false;
+                }
+            },
+            error: function (result) {
+                alert("error");
+            }})
+
+    );
+    return false;
+});*/
+    //校验成功后调用公共的提交方法 该方法调试有问题提时屏蔽
+  /*  function submitForm() {
+        alert("调用submitForm");
+        $.ajax({
+            type: "post",
+            url: "/bbs/addUptSave?pid=",
+            data: $('#frm_bbsedit').serialize(),
+            success: function (result) {
+                console.log(result.code);
+                alert("返回结果");
+                if (result.code) {
+                    alert("提交成功");
+                    window.location.href = "/bbs/list";
+                } else {
+                    // document.getElementById("testid").innerHTML= result.msg;
+                    alert("数据提交失败！");
+                    return false;
+                }
+            },
+            error: function (result) {
+                alert("error");
+            }
+        })
+    }*/
+</script>
+</body>
+</html>

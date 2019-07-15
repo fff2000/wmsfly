@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <div th:include="common/headEdit"/>
+    <title>修改入库材料信息</title>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>修改入库材料信息</strong></div>
+    <div class="body-content">
+        <form method="post" class="form-x"  id="itemtypeAdd">
+            <input type="hidden" th:field="${item.rowno}"  name="rowno" id="rowno"/>
+            <input type="hidden" th:value="${id}" id="inbillId" name="id">
+            <table align="center" width="80%" style="border-collapse:separate; border-spacing:0px 10px;">
+                <tr>
+                    <td style="text-align:right ">
+                        <label>名   称：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <select id="item"  class="selectpicker"     title="请选择品牌" data-live-search="true">
+                            <option th:each="n : ${newitem}" th:selected="${item.itemcode == n.itemcode}" th:text="${n.itemname}" th:value="${n.itemcode}">
+                            </option>
+                        </select>
+                        <span style="color: red;" ></span>
+                    </td>
+                   </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>品牌：</label>
+                    </td>
+                    <td style="text-align:left ">
+                        <select  id="bread" class="selectpicker"    title="请选择品牌" data-live-search="true">
+                            <option th:each="b : ${bread}" th:selected="${item.breadcode == b.breadcode}" th:text="${b.getBreadname()}" th:value="${b.getBreadcode()}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>发货数量：</label>
+
+                    </td>
+                    <td style="text-align:left "><input type="text"  style="line-height: 25px;height: 25px;" th:field="${item.sendNum}" name="sendNum"  ></td>
+                </tr>
+                <tr>
+                <tr>
+                    <td style="text-align:right ">
+                        <label>实收数量：</label>
+
+                    </td>
+                    <td style="text-align:left "><input type="text" th:field="${item.itemnum}"  style="line-height: 25px;height: 25px;" name="itemnum" ></td>
+                </tr>
+                <tr>
+                <tr>
+                    <td colspan="4" style="text-align:center ">
+                        <button style="margin-left:-35%;border-radius: 25px;color: #00aaee" type="button" id="button" class="btn btn-primary btn-lg">保存</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script language="JavaScript">
+
+
+    $("#button").click(function () {
+        var itemcode = $("#item option:selected").val();
+        var itemname = $("#item option:selected").text();
+        var breadcode = $("#bread option:selected").val();
+        var breadname = $("#bread option:selected").text();
+        var rowno = $("#rowno").val();
+        var id = $("#inbillId").val();
+        var sendNum = $("#sendNum").val();
+        var itemnum = $("#itemnum").val();
+        var json = {"rowno":rowno,"inbillcode":id,"itemcode":itemcode,"itemname":itemname,"breadcode":breadcode,"breadname":breadname,"sendNum":sendNum,"itemnum":itemnum};
+       console.log(json);
+        $.ajax({
+            type:"post",
+            url:"/inbillD/updateInbill",
+            data:JSON.stringify(json),
+            contentType: 'application/json; charset=UTF-8',
+            success:function (data) {
+                if(data == "success"){
+                    window.location.href="/indillh/toUpdate?id="+id;
+                }
+            }
+        })
+    })
+
+
+        // var id = $("#upcode").val();
+        // alert(id);
+ /*  function subTest(){
+        alert("提交事件，刷新树");
+       $('#itemtypeAdd').submit();
+        window.parent.itemtypeLeft.location.reload();
+    };*/
+
+
+/*    $('#frm_bbsedit').submit(function(){
+        debugger;
+        submitForm();
+    });*/
+
+//校验后提交
+/*$("#frm_bbsedit").on("submit", function(ev) {
+    //阻止submit表单提交
+    ev.preventDefault(
+        $.ajax({
+            type: "post",
+            url: "/bbs/addUptSave?pid=",
+            data: $('#frm_bbsedit').serialize(),
+            success: function (result) {
+                console.log(result.code);
+                if (result.code) {
+                    alert("提交成功");
+                    window.location.href = "/bbs/list";
+                } else {
+                    // document.getElementById("testid").innerHTML= result.msg;
+                    alert("数据提交失败！");
+                    return false;
+                }
+            },
+            error: function (result) {
+                alert("error");
+            }})
+
+    );
+    return false;
+});*/
+    //校验成功后调用公共的提交方法 该方法调试有问题提时屏蔽
+  /*  function submitForm() {
+        alert("调用submitForm");
+        $.ajax({
+            type: "post",
+            url: "/bbs/addUptSave?pid=",
+            data: $('#frm_bbsedit').serialize(),
+            success: function (result) {
+                console.log(result.code);
+                alert("返回结果");
+                if (result.code) {
+                    alert("提交成功");
+                    window.location.href = "/bbs/list";
+                } else {
+                    // document.getElementById("testid").innerHTML= result.msg;
+                    alert("数据提交失败！");
+                    return false;
+                }
+            },
+            error: function (result) {
+                alert("error");
+            }
+        })
+    }*/
+</script>
+</body>
+</html>

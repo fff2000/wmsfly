@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <div th:include="common/headEdit"/>
+    <title></title>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>编辑材料品牌信息</strong></div>
+    <div class="body-content">
+        <form method="post" class="form-x" action="" id="frm_bbsedit">
+            <input type="hidden" th:field="${bs.breadcode}" name="breadcode"/>
+           <table align="center" width="80%" >
+               <tr>
+                   <td style="text-align:right ">
+                       <label>材料品牌：</label>
+
+                   </td>
+                   <td style="text-align:left "><input type="text"  style="line-height: 25px;height: 25px;" th:field="${bs.breadname}"></td>
+                   <td style="text-align:right ">
+                       <label>是否启用：</label>
+
+                   </td>
+                   <td style="text-align:left ">
+                       <select style="width: 170px;line-height: 25px;height: 25px;" th:field="${bs.state}" id="selcet">
+                           <option value="0">否</option>
+                           <option value="1">是</option>
+                       </select>
+                   </td>
+               </tr>
+               <tr><td>&nbsp;</td></tr>
+               <tr>
+                   <td colspan="4" style="text-align:center "><button class="button bg-main icon-check-square-o button-small" type="submit" id="btn_submit"  > 提交</button></td>
+
+               </tr>
+
+           </table>
+        </form>
+</div>
+<script language="JavaScript">
+    /*    $('#frm_bbsedit').submit(function(){
+            debugger;
+            submitForm();
+        });*/
+
+    //校验后提交
+    $("#frm_bbsedit").on("submit", function(ev) {
+       var sval= $('#selcet option:selected').val();
+       var frm_bbsedit=$('#frm_bbsedit').serialize();
+
+        /*    $.ajax({
+        });*/
+        //阻止submit表单提交
+        ev.preventDefault(
+            $.ajax({
+                type: "post",
+                url: "bread/addUptSave?pid=",
+                data: frm_bbsedit+"&sval="+sval,
+                success: function (result) {
+                    console.log(result.code);
+                    if (result.code) {
+                        alert("提交成功");
+                        window.location.href = "bs/bread/list";
+                    } else {
+                        // document.getElementById("testid").innerHTML= result.msg;
+                        alert("数据提交失败！");
+                        return false;
+                    }
+                },
+                error: function (result) {
+                    alert("error");
+                }})
+
+        );
+        return false;
+    });
+    //校验成功后调用公共的提交方法 该方法调试有问题提时屏蔽
+    /*  function submitForm() {
+          alert("调用submitForm");
+          $.ajax({
+              type: "post",
+              url: "/bbs/addUptSave?pid=",
+              data: $('#frm_bbsedit').serialize(),
+              success: function (result) {
+                  console.log(result.code);
+                  alert("返回结果");
+                  if (result.code) {
+                      alert("提交成功");
+                      window.location.href = "/bbs/list";
+                  } else {
+                      // document.getElementById("testid").innerHTML= result.msg;
+                      alert("数据提交失败！");
+                      return false;
+                  }
+              },
+              error: function (result) {
+                  alert("error");
+              }
+          })
+      }*/
+</script>
+</body>
+</html>

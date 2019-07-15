@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>title</title>
+    <div th:include="common/head"></div>
+</head>
+<body>
+<div class="panel admin-panel">
+    <div class="panel-head">
+        <strong class="icon-reorder"> 修改配送出库单</strong>
+    </div>
+    <table class="table table-hover text-center">
+        <form action="/outH/updateItem" onsubmit="return check()" method="post">
+            <tr>
+                <td>
+                    出库单号:<input th:value="${Item.outbillcode}" readonly id="outbillcode" name="outbillcode" />
+                    <input hidden="hidden" id="storeBill" name="whOutbillD.storebill" th:value="${Item.whOutbillD.getStorebill()}" />
+                </td>
+                <td>
+                    销售单号:<input th:value="${Item.salebill}" id="salebill" name="salebill" />
+                </td>
+                <td>
+                    项目名称:<input th:value="${Item.projectCode}" id="projectCode" name="projectCode" />
+                    <span style="color: red">*</span>
+                </td>
+                <td>
+                    仓库名称:
+                    <select name="wareCode" style="width: 150px">
+                        <option th:each="Ware : ${Ware}" th:value="${Ware.warecode}" th:text="${Ware.warename}">
+
+                        </option>
+                    </select>
+                    <span style="color: red">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    标段名称:<input th:value="${Item.tag}" id="tag" name="tag" />
+                </td>
+                <td>
+                    客户名称:<input th:value="${Item.custCode}" id="custCode" name="custCode" />
+                </td>
+                <td>
+                    提货车号:<input th:value="${Item.vehicle}" id="vehicle" name="vehicle" />
+                </td>
+                <td>
+                    运输路线:<input th:value="${Item.runline}" id="runline" name="runline" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    提货司机:<input th:value="${Item.driver}" id="driver" name="driver" />
+                </td>
+                <td>
+                    司机电话:<input th:value="${Item.motormanTel}" id="motormanTel" name="motormanTel" />
+                </td>
+                <td>
+                    配送单号:<input th:value="${Item.pickbill}" id="sendbill" name="sendbill" />
+                </td>
+                <td>
+                    出库日期:<input type="date" th:value="${Item.outdate}" id="outdate" name="outdate" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    运输方式:
+                    <select style="width: 150px" name="tranType" id="tranType">
+                        <option value="小轿车">小轿车</option>
+                        <option value="大货车">大货车</option>
+                    </select>
+                </td>
+                <td>
+                    出库方式:
+                    <select  style="width: 150px" id="sendType" name="sendType">
+                        <option value="配送出库">配送出库</option>
+                        <option value="自动出库">自动出库</option>
+                    </select>
+                </td>
+                <td>
+                    提货人名:<input th:value="${Item.tellMan}" id="tellMan" name="tellMan" />
+                </td>
+                <td>
+                    身份证号:<input th:value="${Item.identifyId}" id="identifyId" name="identifyId" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <span th:if="${state} == '0'">
+                        <input type="submit" style="width: 100px" class="button border-main" th:value="修改" />
+                    </span>
+                    <span th:if="${state} == '0'">
+                        <a class="button border-main" style="width: 100px" th:href="@{/outH/Storage(outbillcode=${Item.outbillcode})}">
+                             选择材料
+                        </a>
+                    </span>
+                    <a class="button border-main" style="width: 100px" th:href="@{/outH/Index}">
+                        返回
+                    </a>
+                </td>
+            </tr>
+        </form>
+    </table>
+    <hr/>
+    <div class="panel-head">
+        <strong class="icon-reorder"> 材料列表</strong>
+    </div>
+    <table class="table table-hover text-center">
+        <tr>
+            <th>材料名称</th>
+            <th>品牌</th>
+            <th>规格型号</th>
+            <th>钢号</th>
+            <th>计划数量</th>
+            <th>实际出库数量</th>
+            <th>货物件数</th>
+            <th>操作</th>
+        </tr>
+            <tr th:each="item : ${ItemSelect}">
+                <td id="storeBills" th:text="${item.storebill}"></td>
+                <td th:text="${item.itemname}"></td>
+                <td th:text="${item.breadname}"></td>
+                <td th:text="${item.steelNo}"></td>
+                <td th:text="${item.planNum}"></td>
+                <td th:text="${item.itemnum}"></td>
+                <td th:text="${item.itemPiece}"></td>
+                <td>
+                    <span th:if="${state} == '0'">
+                        <a class="delItem button border-red" style="padding: 2px 8px;">
+                            <span class="icon-trash-o"></span> 删除
+                        </a>
+                    </span>
+                </td>
+            </tr>
+    </table>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".delItem").click(function (){
+            var id = $(this).parent().parent().parent().find("#storeBills").text();
+            var outBillCode = $("#outbillcode").val();
+            if(confirm("您确认要删除选中的内容吗？")){
+                $.ajax({
+                    url: "/outH/DelPlanNum?storeBill=" + id + "&outbillcode=" + outBillCode,
+                    type: "GET",
+                    success: function (req) {
+                        location.href = "/outH/updateOutItem?outBillCode="+outBillCode;
+                    }
+                })
+            }
+         })
+    })
+</script>
+</body>
+</html>

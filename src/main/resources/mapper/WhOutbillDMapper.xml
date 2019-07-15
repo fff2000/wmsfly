@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.wh.dao.WhOutbillDMapper">
+  <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.WhOutbillD">
+    <result column="storebill" jdbcType="CHAR" property="storebill" />
+    <result column="areacode" jdbcType="VARCHAR" property="areacode" />
+    <result column="itemcode" jdbcType="CHAR" property="itemcode" />
+    <result column="itemname" jdbcType="VARCHAR" property="itemname" />
+    <result column="breadcode" jdbcType="CHAR" property="breadcode" />
+    <result column="outbillCode" jdbcType="CHAR" property="outbillcode" />
+    <result column="breadname" jdbcType="VARCHAR" property="breadname" />
+    <result column="supply_code" jdbcType="CHAR" property="supplyCode" />
+    <result column="standard" jdbcType="VARCHAR" property="standard" />
+    <result column="steel_no" jdbcType="VARCHAR" property="steelNo" />
+    <result column="batch_no" jdbcType="VARCHAR" property="batchNo" />
+    <result column="fac_code" jdbcType="CHAR" property="facCode" />
+    <result column="unit_code" jdbcType="CHAR" property="unitCode" />
+    <result column="plan_num" jdbcType="DECIMAL" property="planNum" />
+    <result column="itemnum" jdbcType="DECIMAL" property="itemnum" />
+    <result column="item_piece" jdbcType="DECIMAL" property="itemPiece" />
+    <result column="itemsalevalue" jdbcType="DECIMAL" property="itemsalevalue" />
+    <result column="itemvalue" jdbcType="DECIMAL" property="itemvalue" />
+    <result column="pay" jdbcType="DECIMAL" property="pay" />
+    <result column="bar_code" jdbcType="VARCHAR" property="barcode" />
+    <result column="cremark" jdbcType="VARCHAR" property="cremark" />
+    <result column="containcode" jdbcType="CHAR" property="containcode" />
+    <result column="balance_date" jdbcType="CHAR" property="balanceDate" />
+    <result column="balance_price" jdbcType="DECIMAL" property="balancePrice" />
+    <result column="balance_time" jdbcType="TIMESTAMP" property="balanceTme" />
+    <result column="spebill" jdbcType="VARCHAR" property="spebill" />
+    <result column="is_error" jdbcType="CHAR" property="isError" />
+    <result column="uf_flag" jdbcType="CHAR" property="ufFlag" />
+    <result column="uf_flag1" jdbcType="CHAR" property="ufFlag1" />
+  </resultMap>
+  <delete id="delWhOutbillD" parameterType="String">
+    DELETE FROM wh_outbill_d WHERE storebill LIKE '%${id}%'
+  </delete>
+</mapper>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>材料品牌信息</title>
+    <div th:include="common/head"></div>
+</head>
+<body>
+<div class="padding border-bottom">
+    <form   method="post" action = "/bs/bread/list"  id="queryform">
+        <ul class="search" style="padding-left:10px;">
+            <li>搜索：</li>
+            <li>
+                <input type="text" placeholder="请输入品牌编码、品牌名称、是否启用" name="context"  id="breadCode" th:value ="${param.context}" class="input" style="width:250px; line-height:17px;display:inline-block" />
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="button border-main icon-search" onclick="changesearch()" > 搜索</a>
+            </li>
+        </ul>
+    </form>
+</div>
+
+
+<form method="post" action="" id="listform">
+    <div class="panel admin-panel">
+        <div class="panel-head"><strong class="icon-reorder">材料品牌信息</strong></div>
+        <table class="table table-hover text-center">
+            <tr>
+                <th>序号</th>
+                <th>品牌编码</th>
+                <th>品牌名称</th>
+                <th>启用状态</th>
+                <!-- <th>公告内容</th>-->
+                <!-- <th>制单日期</th>-->
+                <th>操作</th>
+            </tr>
+
+                <tr th:each="item : ${page.list}">
+                    <td  style="text-align:left; padding-left:20px;">
+                        <input type="checkbox" name="id[]" th:value="${item.breadcode}"/>
+                        <span th:text="${{itemStat.index+1}}"/></td>
+                    <td th:text="${{item.breadcode}}"></td>
+                    <td th:text="${{item.breadname}}"><font color="#00CC99">dd</font></td>
+                    <td th:switch="${item.state}">
+                        <span  th:case="0">未启用</span>
+                        <span th:case="1">已启用</span>
+                    </td>
+
+                    <!--<td th:text="${{item.content}}"></td>-->
+                    <!--<td th:text="${{item.billDate}}"></td>-->
+                    <td><div>
+                        <a class="button border-main" th:href="@{/addUptUrl(pid=${item.breadcode})}" style="padding: 2px 8px;"><span class="icon-edit"></span> 修改</a>
+                        <a class="button border-red" href="javascript:void(0)"  th:onclick=" del([[${item.breadcode}]])" style="padding: 2px 8px;"><span class="icon-trash-o"></span> 删除</a>
+
+                    </div>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td style="text-align:left; padding:10px 0;padding-left:20px;">
+                        <input type="checkbox"   id="checkall"/>全选
+                    </td>
+                  <!--  <td><a class="button border-red" href="javascript:void(0)" style="padding: 2px 8px;"
+                           onclick="return DelSelect()">
+                        <span class="icon-trash-o"></span> 批量删除</a></td>-->
+                    <td><a class="button border-main" href="/addUptUrl?pid=" style="padding: 2px 8px;">
+                        <span class="icon-plus-square-o"></span> 新增</a>
+                    </td>
+                    <td></td>  <td></td>
+                </tr>
+                <tr>
+                    <!--页脚：分页-->
+                    <td colspan="8">
+
+                        <div class="pagelist">
+                            <a th:href="@{/bs/bread/list(start=0,context=${param.context})}">[首  页]</a>
+                            <a th:href="@{/bs/bread/list(start=${page.pageNum-1},context=${param.context})}">[上一页]</a>
+                            <span th:if="${page.pageNum} != ${page.pages}" style="border:0px">
+                            <a th:href="@{/bs/bread/list(start=${page.pageNum+1},context=${param.context})}">[下一页]</a>
+                            </span>
+                            <a th:href="@{/bs/bread/list(start=${page.pages},context=${param.context})}">[尾  页]</a>
+                            共[[${page.total}]]条记录
+                        </div>
+                    </td>
+                </tr>
+        </table>
+    </div>
+    </div>
+    </div>
+
+
+</form>
+<script type="text/javascript">
+
+    //搜索
+    function changesearch(){
+        $("#queryform").submit();
+    }
+
+    //单个删除
+    function del(id) {
+        if (confirm("您确定要删除吗?")) {
+            $.ajax({
+                type: "post",
+                url: "/list/del?idStr=" + id,
+                success: function (result) {
+                    console.log(result.code);
+                    // result.code=true代表删除成功.
+                    if (result.code) {
+                        alert(result.msg);
+                        window.location.href = "/bs/bread/list";
+                    } else {
+                        alert(result.msg);
+                        return false;
+                    }
+                }
+            });
+        }
+    }
+
+    //全选
+   /* $("#checkall").click(
+        function () {
+            if (this.checked) {
+                $("input[name='id[]']").each(function () {
+                    this.checked = true;
+                });
+            } else {
+                $("input[name='id[]']").each(function () {
+                    this.checked = false;
+                });
+            }
+        }
+    );
+
+    //批量删除
+    function DelSelect() {
+        var ids = "";
+        var Checkbox = false;
+        $("input[name='id[]']").each(function () {
+            if (this.checked == true) {
+                //获取选中复选框的主键值，用逗号隔开
+                ids += this.value + ",";
+                Checkbox = true;
+            }
+        });
+        if (Checkbox) {
+            var t = confirm("您确认要删除选中的内容吗？");
+            if (t == false)
+                return false;
+            alert(ids);
+            $.ajax({
+                type: "post",
+                url: "/list/del?idStr=" + ids,
+
+                success: function (result) {
+                    console.log(result.code);
+                    // result.code=true代表删除成功.
+                    if (result.code) {
+                        alert(result.msg);
+                        window.location.href = "/bs/bread/list";
+                    } else {
+                        alert(result.msg);
+                        return false;
+                    }
+                }
+            });
+            //  $("#listform").submit();
+        }
+        else {
+            alert("请选择您要删除的内容!");
+            return false;
+        }
+    }*/
+
+
+
+</script>
+</body>
+</html>

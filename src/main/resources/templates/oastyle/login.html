@@ -1,0 +1,85 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="renderer" content="webkit">
+    <title>登录</title>
+    <link rel="stylesheet" href="/oastyle/css/pintuer.css">
+    <link rel="stylesheet" href="/oastyle/css/admin.css">
+    <script src="/oastyle/js/jquery.js"></script>
+    <script src="/oastyle/js/pintuer.js"></script>
+</head>
+<body>
+<div class="bg"></div>
+<div class="container">
+    <div class="line bouncein">
+        <div class="xs6 xm4 xs3-move xm4-move">
+            <div style="height:150px;"></div>
+            <div class="media media-y margin-big-bottom">
+            </div>
+            <form method="POST" id="frm_login"  target="nm_iframe"><!--action="/login" -->
+                <div class="panel loginbox">
+                    <div class="text-center margin-big padding-big-top"><h1>信息管理系统</h1></div>
+                    <div class="panel-body" style="padding:30px; padding-bottom:10px; padding-top:10px;">
+                        <div class="form-group">
+                            <div class="field field-icon-right">
+                                <input type="text" class="input input-big" id = "username" name="username" placeholder="登录账号"
+                                       data-validate="required:请填写账号" value="fly"/>
+                                <span class="icon icon-user margin-small"></span>
+                                <div id="testid" style="color:red"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="field field-icon-right">
+                                <input type="password" class="input input-big" name="userPass" placeholder="登录密码"
+                                       data-validate="required:请填写密码" value="123456"/>
+                                <span class="icon icon-key margin-small"></span>
+                            </div>
+                        </div>
+                        <!--                    <div class="form-group">
+                                                <div class="field">
+                                                    <input type="text" class="input input-big" name="code" placeholder="填写右侧的验证码" data-validate="required:请填写右侧的验证码" />
+                                                   <img src="oastyle/images/passcode.jpg" alt="" width="100" height="32" class="passcode" style="height:43px;cursor:pointer;" value="6982" onclick="this.src=this.src+'?'">
+
+                                                </div>
+                                            </div>-->
+                    </div>
+                    <div style="padding:30px;"><input type="submit"
+                                                      class="button button-block bg-main text-big input-big" value="登录"
+                                                      id="btn_login"></div>
+                </div>
+            </form>
+            <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+        </div>
+    </div>
+</div>
+<script language="JavaScript">
+    //校验成功后调用公共的提交方法
+    function submitForm(){
+            $.ajax({
+                type: "post",
+                url: "login",
+                data: $('#frm_login').serialize(),
+                success: function (result) {
+                    console.log(result.code);
+                    /**
+                     * result.code=true代表用户名密码正确，跳转到登录页面.
+                     */
+                    if (result.code) {
+                        window.location.href = "/loginOk";
+                    } else {
+                       document.getElementById("testid").innerHTML= result.msg;
+                        //  alert(result.msg);
+                        return false;
+                    }
+                },
+                error: function (result) {
+                    alert("error");
+                }
+            })
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>承运商信息</title>
+</head>
+
+<body>
+<div th:include="common/head"></div>
+
+<div class="padding border-bottom">
+    <form  method="post" th:action = "@{/tranunit/list}"  id="queryform">
+        <ul class="search" style="padding-left:10px;">
+            <li>搜索：</li>
+            <li>
+                <input type="text" placeholder="请输入运输单位名称.联系人.联系电话" th:value="${param.content}"  name="content"  id="result"  class="input" style="width:250px; line-height:17px;display:inline-block" />
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="button border-main icon-search" onclick="$('#queryform').submit()" > 搜索</a>
+            </li>
+        </ul>
+    </form>
+</div>
+
+<form method="post" action="" id="listform">
+    <div class="panel admin-panel">
+        <div class="panel-head"><strong class="icon-reorder">承运商信息</strong></div>
+        <table class="table table-hover text-center">
+            <tr>
+                <th>序号</th>
+<!--                <th>仓库编码</th>-->
+                <th>运输单位名称</th>
+                <th>所在城市</th>
+                <th>联系人</th>
+                <th>联系电话</th>
+                <th>传真</th>
+                <th>运输能力</th>
+                <th>通迅地址</th>
+                <th>国税号</th>
+                <th>开户行</th>
+                <th>账号</th>
+                <th>操作</th>
+            </tr>
+            <!--/*@thymesVar id="list" type="java.util.List"*/-->
+            <!--/*@thymesVar id="w" type="com.obtk.wmsfly.domain.BsWarehouse"*/-->
+            <tr th:each="t : ${page.list}">
+<!--                <td th:text="${w.warecode}"></td>-->
+                <td  style="text-align:left; padding-left:20px;"><input type="checkbox" name="id[]" th:value="${t.trancode}" />
+                    <span th:text="${{tStat.index+1}}"></span>
+                </td>
+                <td th:text="${t.tranname}"></td>
+                <td th:text="${t.city}"></td>
+                <td th:text="${t.connecter}"></td>
+                <td th:text="${t.linktel}"></td>
+                <td th:text="${t.fax}"></td>
+                <td th:text="${t.tranpower}"></td>
+                <td th:text="${t.addr}"></td>
+                <td th:text="${t.taxcode}"></td>
+                <td th:text="${t.bank}"></td>
+                <td th:text="${t.accounts}"></td>
+                <td>
+                    <div>
+                        <a class="button border-main" th:href="@{/tranunit/toUpdate/} + ${t.trancode}"  style="padding: 2px 8px;"><span class="icon-edit"></span> 修改</a>
+                    <a class="button border-red" th:onclick="del([[${t.trancode}]])"  style="padding: 2px 8px;"  ><span class="icon-trash-o"></span>删除</a>
+                </div>
+                </td>
+            </tr>
+            <tr>
+                    <td  style="text-align:left; padding:10px 0;padding-left:20px;"><input type="checkbox" id="checkall"/>全选 </td>
+                    <td><a class="button border-red" href="javascript:void(0)" style="padding: 2px 8px;" th:onclick="DelSelect()">
+                        <span class="icon-trash-o"></span> 批量删除</a></td>
+                    <td><a class="button border-main" href="/tranunit/toAdd" style="padding: 2px 8px;" >
+                        <span class="icon-plus-square-o"></span> 新增</a>
+                    </td>
+                </tr>
+            <tr>
+                <td colspan="8">
+                    <div class="pagelist">
+                        <a th:href="@{/tranunit/list(start=1,content=${param.content})}">首页</a>
+                        <a th:href="@{/tranunit/list(start=${page.pageNum - 1},content=${param.content})}">上一页</a>
+                        <span th:if="${page.pageNum} != ${page.pages}" style="border:0px">
+                        <a th:href="@{/tranunit/list(start=${page.pageNum+1},content=${param.content})}">下一页</a>
+                        </span>
+                        <a th:href="@{/tranunit/list(start=${page.pages},content=${param.content})}">尾页</a>
+                    </div>
+                    <!-- <div th:include="template:: footer"></div>-->
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+    </div>
+</form>
+    <script type="text/javascript"  >
+
+        //单个删除
+        function del(id){
+            if(confirm("您确定要删除吗?")){
+                $.ajax({
+                    type:"post",
+                    url:"/tranunit/del/" + id,
+                    success:function (data) {
+                        if(data > 0){
+                            window.location.href="/tranunit/list";
+                        }
+                    }
+                })
+            }
+        }
+        //全选
+        $("#checkall").click(function(){
+            $("input[name='id[]']").each(function(){
+                if (this.checked) {
+                    this.checked = false;
+                }
+                else {
+                    this.checked = true;
+                }
+            });
+        })
+
+        //批量删除
+        function DelSelect(){
+            var ids = "";
+            var Checkbox=false;
+            $("input[name='id[]']").each(function(){
+                if (this.checked==true) {
+                    ids += this.value + ",";
+                    Checkbox=true;
+                }
+            });
+            if (Checkbox){
+                var t=confirm("您确认要删除选中的内容吗？");
+                alert(ids);
+                if (t==false) return false;
+                $.ajax({
+                    type:"post",
+                    url:"/tranunit/del/" + ids,
+                    success:function (result) {
+                        window.location.href="/tranunit/list";
+                    }
+                })
+                $("#listform").submit();
+            }
+            else{
+                alert("请选择您要删除的内容!");
+                return false;
+            }
+        }
+
+
+
+    </script>
+</body>
+</html>

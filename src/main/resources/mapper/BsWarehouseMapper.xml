@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.obtk.wmsfly.bs.dao.BsWarehouseMapper">
+  <resultMap id="BaseResultMap" type="com.obtk.wmsfly.domain.BsWarehouse">
+    <result column="wareCode" jdbcType="CHAR" property="warecode" />
+    <result column="wareName" jdbcType="VARCHAR" property="warename" />
+    <result column="dutyMan" jdbcType="VARCHAR" property="dutyman" />
+    <result column="city" jdbcType="CHAR" property="city" />
+    <result column="postCode" jdbcType="CHAR" property="postcode" />
+    <result column="addr" jdbcType="VARCHAR" property="addr" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="attnMan" jdbcType="VARCHAR" property="attnman" />
+    <result column="mobilTel" jdbcType="VARCHAR" property="mobiltel" />
+    <result column="caller" jdbcType="VARCHAR" property="caller" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="wareArea" jdbcType="DECIMAL" property="warearea" />
+    <result column="leftadd" jdbcType="INTEGER" property="leftadd" />
+    <result column="width" jdbcType="INTEGER" property="width" />
+    <result column="totalrow" jdbcType="INTEGER" property="totalrow" />
+    <result column="totalcol" jdbcType="INTEGER" property="totalcol" />
+    <result column="rowadd" jdbcType="INTEGER" property="rowadd" />
+    <result column="height" jdbcType="INTEGER" property="height" />
+    <result column="kind" jdbcType="CHAR" property="kind" />
+    <result column="wareType" jdbcType="CHAR" property="waretype" />
+  </resultMap>
+
+  <select id="getWarehouseAll"  resultType="com.obtk.wmsfly.domain.BsWarehouse">
+    select * from bs_warehouse where 1 = 1
+      <if test="content != null  and content != '' ">
+          and wareName like '%${content}%'
+          or dutyMan like '%${content}%'
+      </if>
+  </select>
+
+
+  <select id="getWarehouseByMaxId" resultType="String">
+     select  IFNULL(MAX(wareCode),0) from  bs_warehouse
+  </select>
+
+  <delete id="deleWarehouse" parameterType="java.util.List">
+         delete from bs_warehouse where  wareCode in
+          <foreach collection="list" item="ids" open="(" close=")" separator=",">
+            #{ids,jdbcType=VARCHAR}
+        </foreach>
+  </delete>
+  <insert id="addWarehouse">
+    INSERT INTO `bs_warehouse`
+    (`wareCode`, `wareName`, `dutyMan`, `city`, `postCode`, `addr`, `tel`, `attnMan`, `mobilTel`, `caller`, `fax`, `email`, `remark`, `wareArea`, `leftadd`, `width`, `totalrow`, `totalcol`, `rowadd`, `height`, `kind`, `wareType`)
+    VALUES (#{warecode}, #{warename}, #{dutyman}, #{city}, #{postcode},
+     #{addr}, #{tel}, #{attnman}, #{mobiltel}, #{caller}, #{fax}, #{email}, #{remark},
+      #{warearea}, #{leftadd}, #{width}, #{totalrow}, #{totalcol}, #{rowadd}, #{height}, #{kind}, #{waretype});
+  </insert>
+
+  <select id="getWarehouseById" resultType="com.obtk.wmsfly.domain.BsWarehouse">
+    select * from bs_warehouse where wareCode = #{id}
+  </select>
+
+  <update id="updateWarehouse">
+    UPDATE bs_warehouse
+     SET `wareName`=#{warename},`dutyMan`=#{dutyman}, `city`=#{city}, `postCode`=#{postcode},
+      `addr`=#{addr}, `tel`=#{tel}, `attnMan`=#{attnman}, `mobilTel`=#{mobiltel}, `caller`=#{caller},
+       `fax`=#{fax}, `email`=#{email}, `remark`=#{remark}, `wareArea`=#{warearea}, `leftadd`=#{leftadd}, `width`=#{width}, `totalrow`=#{totalrow},
+        `totalcol`=#{totalcol},`rowadd`=#{rowadd}, `height`=#{height}, `kind`=#{kind}, `wareType`=#{waretype} WHERE wareCode = #{warecode};
+  </update>
+</mapper>
